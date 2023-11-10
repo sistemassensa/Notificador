@@ -1,0 +1,134 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+SES_Notificador
+</name>
+</assembly>
+<members>
+<member name="T:SES_Notificador.My.Resources.Resources">
+<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+</member>
+<member name="P:SES_Notificador.My.Resources.Resources.ResourceManager">
+<summary>
+  Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+</summary>
+</member>
+<member name="P:SES_Notificador.My.Resources.Resources.Culture">
+<summary>
+  Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+</summary>
+</member>
+<member name="T:SES_Notificador.WSSiemens.Service1">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.#ctor">
+<remarks/>
+</member>
+<member name="E:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTCompleted">
+<remarks/>
+</member>
+<member name="E:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTCompleted">
+<remarks/>
+</member>
+<member name="E:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTRESTCompleted">
+<remarks/>
+</member>
+<member name="E:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTRESTCompleted">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryT(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTAsync(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTAsync(System.String,System.Byte[],System.Object)">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesT(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTAsync(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTAsync(System.String,System.Byte[],System.Object)">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTREST(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTRESTAsync(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerSalesTRESTAsync(System.String,System.Byte[],System.Object)">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTREST(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTRESTAsync(System.String,System.Byte[])">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.RegisterPartnerInventoryTRESTAsync(System.String,System.Byte[],System.Object)">
+<remarks/>
+</member>
+<member name="M:SES_Notificador.WSSiemens.Service1.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.MessagesResult">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.MessagesResult.Message">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.MessagesResult.ProcessEstatus">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.MessagesResult.message1">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.MessagesResult.proceessstatus">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerInventoryTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerInventoryTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.RegisterPartnerInventoryTCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerSalesTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerSalesTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.RegisterPartnerSalesTCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerSalesTRESTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerSalesTRESTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.RegisterPartnerSalesTRESTCompletedEventArgs.Result">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerInventoryTRESTCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:SES_Notificador.WSSiemens.RegisterPartnerInventoryTRESTCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:SES_Notificador.WSSiemens.RegisterPartnerInventoryTRESTCompletedEventArgs.Result">
+<remarks/>
+</member>
+</members>
+</doc>

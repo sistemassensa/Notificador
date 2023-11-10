@@ -1,0 +1,161 @@
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\bin\Debug\SES_Notificador.exe.config
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\bin\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\bin\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\bin\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.frmIniciaSesion.resources
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.frmConfiguracion.resources
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.frmMDI.resources
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.Resources.resources
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.GenerateResource.Cache
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\AppData\Local\Temporary Projects\SES_Notificador\obj\x86\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe.config
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmIniciaSesion.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmConfiguracion.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmMDI.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.Resources.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.GenerateResource.Cache
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2010\Projects\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbprojResolveAssemblyReference.cache
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe.config
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\CrystalDecisions.Shared.dll
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\EncryptSiemens.dll
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\Newtonsoft.Json.dll
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\stdole.dll
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\bin\Debug\Newtonsoft.Json.xml
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmIniciaSesion.resources
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmConfiguracion.resources
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmMDI.resources
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.Resources.resources
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.GenerateResource.cache
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.CoreCompileInputs.cache
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.CopyComplete
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\source\repos\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbprojAssemblyReference.cache
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe.config
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\Newtonsoft.Json.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmIniciaSesion.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmConfiguracion.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.frmMDI.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.Resources.resources
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.GenerateResource.cache
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.CoreCompileInputs.cache
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.CopyComplete
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.exe
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.xml
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\Microsoft.Win32.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\netstandard.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.AppContext.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Collections.Concurrent.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Collections.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Collections.NonGeneric.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Collections.Specialized.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ComponentModel.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ComponentModel.EventBasedAsync.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ComponentModel.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ComponentModel.TypeConverter.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Console.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Data.Common.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.Contracts.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.Debug.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.FileVersionInfo.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.Process.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.StackTrace.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.TextWriterTraceListener.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.Tools.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.TraceSource.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Diagnostics.Tracing.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Drawing.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Dynamic.Runtime.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Globalization.Calendars.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Globalization.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Globalization.Extensions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.Compression.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.Compression.ZipFile.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.FileSystem.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.FileSystem.DriveInfo.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.FileSystem.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.FileSystem.Watcher.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.IsolatedStorage.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.MemoryMappedFiles.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.Pipes.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.IO.UnmanagedMemoryStream.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Linq.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Linq.Expressions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Linq.Parallel.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Linq.Queryable.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Http.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.NameResolution.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.NetworkInformation.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Ping.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Requests.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Security.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.Sockets.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.WebHeaderCollection.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.WebSockets.Client.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Net.WebSockets.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ObjectModel.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Reflection.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Reflection.Extensions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Reflection.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Resources.Reader.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Resources.ResourceManager.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Resources.Writer.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.CompilerServices.VisualC.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Extensions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Handles.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.InteropServices.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Numerics.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Serialization.Formatters.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Serialization.Json.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Serialization.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Runtime.Serialization.Xml.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Claims.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Algorithms.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Csp.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Encoding.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Primitives.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.X509Certificates.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.Principal.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Security.SecureString.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Text.Encoding.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Text.Encoding.Extensions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Text.RegularExpressions.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.Overlapped.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.Tasks.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.Tasks.Parallel.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.Thread.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.ThreadPool.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Threading.Timer.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.ValueTuple.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.ReaderWriter.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.XDocument.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.XmlDocument.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.XmlSerializer.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.XPath.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\System.Xml.XPath.XDocument.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SENSA_Monedero.dll
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\bin\Debug\SENSA_Monedero.pdb
+C:\Users\SISTEMAS\Documents\Visual Studio 2019\SES_Notificador\SES_Notificador\obj\x86\Debug\SES_Notificador.vbproj.AssemblyReference.cache
