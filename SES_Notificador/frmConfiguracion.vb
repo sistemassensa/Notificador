@@ -35,6 +35,7 @@
         chkSSL.Checked = configuracion.UsaSSL
         txtnSucursal.Text = configuracion.noSucursal
         'Gilberto Madrid 09/08/2019 se agrego un nuevo parametro para saber si funcionara como notificador o como aplicacion para el portal
+        'Gilberto Madrid 12/11/2025 este parametro ahora se usara para saber si se enviaran los correos por sendmailapi o por Smtpclient, si esta encendido se iran por sendmailapi
         chkFuncionPortal.Checked = configuracion.FuncionPortal
 
         txtSender.Text = configuracion.Sender

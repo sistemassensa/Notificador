@@ -5,7 +5,9 @@ Imports System.Net
 Imports Newtonsoft
 Imports EncryptSiemens
 Imports System.Net.Http
-
+Imports Newtonsoft.Json.Linq
+Imports Newtonsoft.Json
+Imports Renci.SshNet
 
 Public Class frmMDI
 
@@ -15,8 +17,11 @@ Public Class frmMDI
     Dim conexion As New Conexion()
     Dim correo As MailMessage
     Dim servidor As SmtpClient
+    Dim vlMensajeLog As String
 
     Private Sub frmMDI_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
         Configuracion.UltimoUsuario = Usuario
         Configuracion.Save()
@@ -90,21 +95,117 @@ Public Class frmMDI
         'Me.Text = Me.Text + "| Version 1.6.2 | 08/11/2023 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
         'Gilberto Madrid 09/11/2023 Se agrega etiqueta configurable al correo
-        Me.Text = Me.Text + "| Version 1.6.5 | 09/11/2023 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+        'Me.Text = Me.Text + "| Version 1.6.5 | 09/11/2023 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
-        NtiMensaje.Text = "| V1.6.5 | BD: " + Configuracion.BaseDeDatos
+        'Gilberto Madrid 16/11/2023 Se agrega el llamado al servicio web rest de siemens y se quitan los popup para loguear en archivos
+        'Me.Text = Me.Text + "| Version 1.6.6 | 16/11/2023 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
-        If Configuracion.FuncionPortal = True Then
-            Me.Text = Me.Text + " USO PORTAL |"
-            NtiMensaje.Text = NtiMensaje.Text + " | USO PORTAL"
+        'Gilberto Madrid 03/01/2024 Se agrega log al crear el archivo para las notificaciones ya que en algunos lugares no se esta creando
+        'Me.Text = Me.Text + "| Version 1.6.7 | 03/01/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
-            CopiarArchivosParaPortalToolStripMenuItem.Visible = True
-        Else
-            CopiarArchivosParaPortalToolStripMenuItem.Visible = False
-        End If
+        'Gilberto Madrid 19/01/2024 Se arregla bug ya que se dejo que solo obtuviera de la BD el nuevo WS de siemens
+        'Me.Text = Me.Text + "| Version 1.6.8 | 19/01/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 09/02/2024 Se agrega el consumo a WS de Azure para que se actualice la IP publica sola
+        'Me.Text = Me.Text + "| Version 1.7 | 09/02/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 09/02/2024 Se agrega el consumo a WS de Azure para que se actualice la IP publica sola
+        'Me.Text = Me.Text + "| Version 1.7.1 | 09/02/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 03/05/2024 Se modifica como generar el archivo de notificaciones
+        'Me.Text = Me.Text + "| Version 1.7.2 | 03/05/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 30/05/2024 Se agrega un try dentro de la creacion de archivo de notificaciones  ya que algunos reportes no aceptan los parametros con nombre y solo con indice
+        'Me.Text = Me.Text + "| Version 1.7.3 | 30/05/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 31/05/2024 Se agrega un try dentro de la creacion de archivo de notificaciones  ya que algunos reportes no aceptan los parametros con nombre y solo con indice
+        'Me.Text = Me.Text + "| Version 1.7.4 | 31/05/2024 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 05/11/2025 Se agrega un try dentro de la creacion de archivo de notificaciones  ya que algunos reportes no aceptan los parametros con nombre y solo con indice
+        'Me.Text = Me.Text + "| Version 1.7.5 | 31/05/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 06/11/2025 Se cambia de libreria para enviar correos
+        'Me.Text = Me.Text + "| Version 1.7.6 | 31/05/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 06/11/2025 Se actualizaron las librerias
+        'Me.Text = Me.Text + "| Version 1.7.7 | 06/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 06/11/2025 Modificamos certificados
+        'Me.Text = Me.Text + "| Version 1.7.8 | 06/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 11/11/2025 Regresamos la version a SmtpClient
+        'Me.Text = Me.Text + "| Version 1.7.9 | 11/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 11/11/2025 Hacemos pruebas para el envio de las notificaciones mediante plantillas
+        'Me.Text = Me.Text + "| Version 1.7.9.1 | 11/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 12/11/2025 Se implementa el sendmailapi para probar en producción
+        'Me.Text = Me.Text + "| Version 1.8 | 12/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 12/11/2025 Se corrije bug al recorrer los archivos a adjuntar en sendmailapi
+        'Me.Text = Me.Text + "| Version 1.8.1 | 12/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 12/11/2025 Se agrega un campo nuevo para saber la ruta web para agregarlo en los archivos adjuntos ya que estaba agregando la ruta del FTP
+        'Me.Text = Me.Text + "| Version 1.8.2 | 12/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 12/11/2025 Se arregla bug en el parametro de correos al enviar sendmailapi ya que se estaba enviando un arreglo de string en vez de un string
+        'Me.Text = Me.Text + "| Version 1.8.3 | 12/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 12/11/2025 Se quita que en el asunto reemplace los acentos en formato HTML y mejor solo se quitan 
+        'Me.Text = Me.Text + "| Version 1.8.4 | 12/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 13/11/2025 Se quita que en el asunto reemplace los acentos en formato HTML y mejor solo se quitan 
+        'Me.Text = Me.Text + "| Version 1.8.5 | 13/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 13/11/2025 se establece el usepasive en false para subir archivos al FTP
+        'Me.Text = Me.Text + "| Version 1.8.6 | 19/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 25/11/2025 Se hacen ajustes al subir archivos al FTP para poder subirlo como FTP en las sucursales que este configurado como tal
+        'Me.Text = Me.Text + "| Version 1.8.7 | 25/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 25/11/2025 faltaron logs y validacion en el catch de try dentro de la funcion que sube el archivo al servidor SFTP
+        'Me.Text = Me.Text + "| Version 1.8.8 | 25/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 25/11/2025 falto un exit function al llamar la funcion de subir el archivo a un sftp
+        'Me.Text = Me.Text + "| Version 1.8.9 | 25/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 26/11/2025 Se cambia el app.config y se copia el package.config
+        'Me.Text = Me.Text + "| Version 1.9 | 26/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 26/11/2025 se quita dll y se agrega a mano
+        'Me.Text = Me.Text + "| Version 1.9.1 | 26/11/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 02/12/2025 Se quita el subir archivos a FTP y se anexan adjuntos en el correo ya que la plantilla si lo permite
+        'Me.Text = Me.Text + "| Version 1.9.2 | 02/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 02/12/2025 agregamos un redim al objeto attachments ya que si iba el valor null marcaba error
+        'Me.Text = Me.Text + "| Version 1.9.3 | 02/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 03/12/2025 cambiamos un arreglo de objeto a una list de objeto para hacerlo como arraylist
+        'Me.Text = Me.Text + "| Version 1.9.4 | 03/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 04/12/2025 se agrega metodo para borrar logs, se agregan logs en la ejecucion de los ws y se quitan 2 ws que son obten ip publica y actualizar ip en azure
+        Me.Text = Me.Text + "| Version 1.9.5 | 04/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        NtiMensaje.Text = "| V1.9.5 | BD: " + Configuracion.BaseDeDatos
+
+        'If Configuracion.FuncionPortal = True Then
+        ' Me.Text = Me.Text + " USO PORTAL |"
+        'NtiMensaje.Text = NtiMensaje.Text + " | USO PORTAL"
+        '
+        'CopiarArchivosParaPortalToolStripMenuItem.Visible = True
+        'Else
+        CopiarArchivosParaPortalToolStripMenuItem.Visible = False
+        'End If
 
         conexion.Usuario = Usuario
         conexion.Contraseña = Contraseña
+
+        'Gilberto Madrid 11/11/2025 lo usamos para pruebas
+        'BorraLogs()
+        'plSendMailApi("Notificaciones", "Alerta de Facturación con modificación en precios SEN8406155U8    (TIJUANA) (PEVC940201U77 - 11/11/2025 - $10,944.74 MXN)", "<b><font face=""arial"" color=#084B8A>Buen dia:</font></b><pre></pre><font face=""arial"" color=#084B8A>Le informamos que ha sido facturado por <b>$10,944.74 MXN</b> con modificaci&oacute;n en precios en la sucursal: <b>TIJUANA</b></font><pre></pre><font face=""arial"" color=#084B8A> . </font><pre></pre><font face=""arial"" color=#084B8A><b>Fecha:</b> <u>11/11/2025</u></font><pre></pre><font face=""arial"" color=#084B8A><b>Folio:</b> <u>J366867</u></font><pre></pre><font face=""arial"" color=#084B8A><b>Importe:</b> <u>$10,944.74 MXN</u></font><pre></pre><font face=""arial"" color=#084B8A><b>Cliente:</b> <u>012725(001) CARLOS DARWIN PEREZ VAZQUEZ</u></font><pre></pre><font face=""arial"" color=#084B8A><b>Agente: </b> <u>COTA  KEVIN</u></font><pre></pre><font face=""arial"" color=#084B8A><b>Registrado por: </b> <u>KEVIN COTA</u></font><pre></pre><table border = ""1""><tr><th>Tipo</th><th>Articulo</th><th>Descripcion</th><th>Unidad</th><th>Moneda</th><th>Costo</th><th>Costo Flete</th><th>Costo Arancel</th><th>CostoFinal</th><th>PrecioFinal</th><th>Utilidad %</th><th>Precio Lista</th><th>Diferencia</th></tr><tr><td>A</td><td>CINT0007            </td><td>CINTA SUPER 33 *NACIONAL* 3/4"" X 20 MT</td><td>RLL</td><td>DOLAR</td><td>$3.47 USD</td><td>$0.00 USD</td><td>$0.00 USD</td><td>$3.47 USD</td><td>$3.85 USD</td><td>11.00</td><td>$3.85 USD</td><td>$0.00 USD</td></tr><tr><td>A</td><td>CINT0037            </td><td>CINTA TEMFLEX 1600 NEGRA 3/4"" 18 MTS (UU009472471)</td><td>RLL</td><td>DOLAR</td><td>$0.90 USD</td><td>$0.00 USD</td><td>$0.00 USD</td><td>$0.90 USD</td><td>$0.99 USD</td><td>10.99</td><td>$0.99 USD</td><td>$0.00 USD</td></tr><tr><td>A</td><td>SIEM0002            </td><td>Q120  BREAKER 1X20 QP</td><td>PZA</td><td>PESOS</td><td>$79.56 MXN</td><td>$0.00 MXN</td><td>$0.00 MXN</td><td>$79.56 MXN</td><td>$87.21 MXN</td><td>9.61</td><td>$89.90 MXN</td><td>$-2.70 MXN</td></tr><tr><td>A</td><td>SIEM0003            </td><td>Q130 BREAKER 1X30 QP</td><td>PZA</td><td>PESOS</td><td>$79.56 MXN</td><td>$0.00 MXN</td><td>$0.00 MXN</td><td>$79.56 MXN</td><td>$87.21 MXN</td><td>9.61</td><td>$89.90 MXN</td><td>$-2.70 MXN</td></tr><tr><td>A</td><td>COND0077            </td><td>ROLLO CABLE THHN 12, NEGRO 100 MTRS COND/VIAK</td><td>RLL</td><td>PESOS</td><td>$970.55 MXN</td><td>$0.00 MXN</td><td>$0.00 MXN</td><td>$970.55 MXN</td><td>$983.95 MXN</td><td>1.38</td><td>$1,077.31 MXN</td><td>$-93.36 MXN</td></tr><tr><td>A</td><td>COND0078            </td><td>ROLLO CABLE THHN 12, BLANCO 100 MTRS COND/VIAK</td><td>RLL</td><td>PESOS</td><td>$970.55 MXN</td><td>$0.00 MXN</td><td>$0.00 MXN</td><td>$970.55 MXN</td><td>$983.95 MXN</td><td>1.38</td><td>$1,077.31 MXN</td><td>$-93.36 MXN</td></tr><tr><td>A</td><td>VIAK0042            </td><td>ALAMBRE 2X12 UF PLANO VIAKON</td><td>RLL</td><td>PESOS</td><td>$2,282.28 MXN</td><td>$0.00 MXN</td><td>$0.00 MXN</td><td>$2,282.28 MXN</td><td>$2,487.69 MXN</td><td>9.00</td><td>$2,487.69 MXN</td><td>$0.00 MXN</td></tr><tr><td>A</td><td>TPVC0031            </td><td>COPLE PVC 1/2 GRIS</td><td>PZA</td><td>DOLAR</td><td>$0.09 USD</td><td>$0.00 USD</td><td>$0.00 USD</td><td>$0.09 USD</td><td>$0.10 USD</td><td>14.00</td><td>$0.10 USD</td><td>$0.00 USD</td></tr><tr><td>A</td><td>TPVC0048            </td><td>ADAPTER MACHO PVC 1 GRIS</td><td>PZA</td><td>DOLAR</td><td>$0.11 USD</td><td>$0.00 USD</td><td>$0.00 USD</td><td>$0.11 USD</td><td>$0.13 USD</td><td>14.00</td><td>$0.13 USD</td><td>$0.00 USD</td></tr><tr><td>A</td><td>LEVI0020            </td><td>49875 ROSETA S/CADENA LEVITON</td><td>PZA</td><td>DOLAR</td><td>$1.29 USD</td><td>$0.00 USD</td><td>$0.00 USD</td><td>$1.29 USD</td><td>$1.46 USD</td><td>13.00</td><td>$1.46 USD</td><td>$0.00 USD</td></tr><tr><td>A</td><td>TUBE0058            </td><td>643S COPLE STEEL 1</td><td>PZA</td><td>DOLAR</td><td>$0.47 USD</td><td>$0.00 USD</td><td>$0.02 USD</td><td>$0.50 USD</td><td>$0.58 USD</td><td>21.79</td><td>$0.58 USD</td><td>$0.00 USD</td></tr></table>", "sistemas.gerencia@sensa.com.mx,notificaciones@sensa.com.mx", "C:\Users\sistemas.gerencia\Desktop\pagoPC.pdf,C:\Users\sistemas.gerencia\Desktop\pagoPC.xml")
+        'flSubirArchivoFTP("Notificaciones", "C:\Users\sistemas.gerencia\Desktop\pagoPC.pdf")
+        'flSubirArchivoSFTP("NotificacionesSFTP", "C:\Users\sistemas.gerencia\Desktop\pagoPC.pdf")
 
         tmrNotificaciones.Enabled = True
         tmrTrabajos.Enabled = True
@@ -128,21 +229,21 @@ Public Class frmMDI
         Try
 
             'Gilberto Madrid 09/08/2019 se agrego un nuevo parametro para saber si funcionara como notificador o como aplicacion para el portal
-            If Configuracion.FuncionPortal = False Then
+            'If Configuracion.FuncionPortal = False Then
 
-                'Gilberto Madrid 27/09/2018 se agrega esto para que se comunique con el motor de timbrado y poder saber si esta abierta esta aplicacion o no
-                ActualizaComunicacionMotor()
+            'Gilberto Madrid 27/09/2018 se agrega esto para que se comunique con el motor de timbrado y poder saber si esta abierta esta aplicacion o no
+            ActualizaComunicacionMotor()
 
-                BorraPDFS()
-                EjecutaNotificaciones()
+            BorraPDFS()
+            'Gilberto Madrid 04/12/2025 agregamos el borrado de logs y que solo deje los ultimos 7 días
+            BorraLogs()
 
-            End If
+            EjecutaNotificaciones()
+
+            'End If
 
         Catch ex As Exception
-            NtiMensaje.BalloonTipIcon = ToolTipIcon.Info
-            NtiMensaje.BalloonTipText = ex.Message
-            NtiMensaje.BalloonTipTitle = "Error ejecución notificaciones"
-            NtiMensaje.ShowBalloonTip(2000)
+            Loggers.e("Error ejecución notificaciones " + ex.Message, ex, MyClass.GetType.Name)
         End Try
 
         tmrNotificaciones.Enabled = True
@@ -348,7 +449,7 @@ Public Class frmMDI
                     conexion.EjecutaProcedimiento(cProcedimientoReporte, ParametrosSeparados, NombresParametrosSeparados)
                     If conexion.Mensaje = "" Then
                         If conexion.dtaux.Rows.Count > 0 Then
-                            vlNombreArchivo = CreaArchivoNotificacion(cReporte, ParametrosSeparados)
+                            vlNombreArchivo = CreaArchivoNotificacion(cReporte, ParametrosSeparados, NombresParametrosSeparados)
                         Else
                             vlNombreArchivo = ""
                         End If
@@ -359,34 +460,44 @@ Public Class frmMDI
                 End If
 
                 If bMandaCorreo = True And DirectCast(CorreosNotificacion, String()).Length > 0 Then
+                    'Gilberto Madrid 12/11/2025 si esta encendido este parametro se manda por sendmailapi
+                    If Configuracion.FuncionPortal = False Then
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+                        correo = New MailMessage
+                        servidor = New SmtpClient
 
-                    correo = New MailMessage
-                    servidor = New SmtpClient
-                    correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-                    For j As Integer = 0 To DirectCast(CorreosNotificacion, String()).Length - 1
-                        If CorreosNotificacion(j).Trim() <> "" Then
-                            correo.CC.Add(CorreosNotificacion(j).Trim())
+                        correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+                        For j As Integer = 0 To DirectCast(CorreosNotificacion, String()).Length - 1
+                            If CorreosNotificacion(j).Trim() <> "" Then
+                                correo.CC.Add(CorreosNotificacion(j).Trim())
+                            End If
+                        Next
+
+                        If vlNombreArchivo.Trim <> "" Then
+
+                            ArchivoNotificacion = New Attachment(vlNombreArchivo)
+                            correo.Attachments.Add(ArchivoNotificacion)
+
                         End If
-                    Next
 
-                    If vlNombreArchivo.Trim <> "" Then
+                        correo.Subject = AsuntoCorreo
+                        correo.Body = CuerpoCorreo
+                        correo.IsBodyHtml = True
 
-                        ArchivoNotificacion = New Attachment(vlNombreArchivo)
-                        correo.Attachments.Add(ArchivoNotificacion)
+                        correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
 
+                        servidor.Host = Configuracion.ServidorSalidaCorreo
+                        servidor.Port = CInt(Configuracion.PuertoCorreo)
+                        servidor.EnableSsl = Configuracion.UsaSSL
+                        servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
+                        servidor.Send(correo)
+                    Else
+                        'Gilberto Madrid 02/12/2025 quitamos esto ya que la plantilla permite mandar archivos adjuntos
+                        'Dim vlArchivosFTP As String
+                        'vlArchivosFTP = flSubirArchivoFTP("Notificaciones", vlNombreArchivo)
+                        plSendMailApi("Notificaciones", AsuntoCorreo, CuerpoCorreo, dtResultadosNotificacion.Rows(0)("CorreoNotificacion"), vlNombreArchivo)
                     End If
 
-                    correo.Subject = AsuntoCorreo
-                    correo.Body = CuerpoCorreo
-                    correo.IsBodyHtml = True
-
-                    correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-
-                    servidor.Host = Configuracion.ServidorSalidaCorreo
-                    servidor.Port = CInt(Configuracion.PuertoCorreo)
-                    servidor.EnableSsl = Configuracion.UsaSSL
-                    servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
-                    servidor.Send(correo)
 
                     'If vlNombreArchivo <> "" Then
                     '    Kill(vlNombreArchivo)
@@ -399,7 +510,7 @@ Public Class frmMDI
 
             End If
         Catch ex As Exception
-
+            Loggers.e("Error al enviar correo de notificaciones " + cNotificacionSQL + " " + ex.Message, ex, MyClass.GetType.Name)
         End Try
     End Sub
 
@@ -419,7 +530,7 @@ Public Class frmMDI
 
     End Sub
 
-    Function CreaArchivoNotificacion(cNombreReporte As String, cParametros As String()) As String
+    Function CreaArchivoNotificacion(cNombreReporte As String, cParametros As String(), Optional cNombresParametros As String() = Nothing) As String
         Dim documento As CrystalDecisions.CrystalReports.Engine.ReportDocument
         Dim filedest As CrystalDecisions.Shared.DiskFileDestinationOptions
         Dim OpcionExportar As CrystalDecisions.Shared.ExportOptions
@@ -429,8 +540,20 @@ Public Class frmMDI
             documento = New CrystalDecisions.CrystalReports.Engine.ReportDocument()
             documento.Load(Application.StartupPath + "\" + cNombreReporte)
 
+
+
             For i As Integer = 0 To DirectCast(cParametros, String()).Length - 1
-                documento.SetParameterValue(i, cParametros(i))
+
+                Try
+                    If cNombresParametros Is Nothing Then
+                        documento.SetParameterValue(i, cParametros(i))
+                    Else
+                        documento.SetParameterValue(cNombresParametros(i), cParametros(i))
+                    End If
+                Catch ex As Exception
+                    documento.SetParameterValue(i, cParametros(i))
+                End Try
+
             Next
             documento.DataSourceConnections(0).SetConnection(Configuracion.Servidor, Configuracion.BaseDeDatos, False)
             documento.SetDatabaseLogon(conexion.Usuario, conexion.Contraseña)
@@ -443,8 +566,10 @@ Public Class frmMDI
             OpcionExportar.ExportDestinationOptions = filedest.Clone
             documento.Export(OpcionExportar)
             documento.Dispose()
+            Loggers.d("Archivo creado correctamente", MyClass.GetType().Name)
             Return NombreArchivo
         Catch ex As Exception
+            Loggers.e("Error al crear archivo de notificaciones " + ex.Message, ex, MyClass.GetType.Name)
             Return ""
         End Try
     End Function
@@ -515,6 +640,19 @@ Public Class frmMDI
         End Try
     End Sub
 
+    Sub BorraLogs()
+        Try
+            Dim Archivos = Directory.GetFiles(My.Application.Info.DirectoryPath + "\logs", "*.log")
+            For Each archivo As String In Archivos
+                If Math.Abs(DateDiff(DateInterval.Day, File.GetCreationTime(archivo), Date.Now)) >= 7 Then
+                    File.Delete(archivo)
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub tmrTrabajos_Tick(sender As System.Object, e As System.EventArgs) Handles tmrTrabajos.Tick
 
         tmrTrabajos.Enabled = False
@@ -522,27 +660,25 @@ Public Class frmMDI
         Try
 
             'Gilberto Madrid 09/08/2019 se agrego un nuevo parametro para saber si funcionara como notificador o como aplicacion para el portal
-            If Configuracion.FuncionPortal = False Then
-                EjecutaTrabajosSQL()
-            Else
-                'Gilberto Madrid 30/07/2019 agregamos proceso para copiado de archivos electronicos para clientes del portal
-                'Gilberto Madrid 08/08/2019 se queda temporalmente manual
-                'Gilberto Madrid 09/08/2019 se habilito de nuevo
-                'Gilberto Madrid 10/08/2019 se agrego un parametro para omitir la pregunta
-                plCopiaArchivosRutaPortal(True)
+            'If Configuracion.FuncionPortal = False Then
+            EjecutaTrabajosSQL()
+            'Gilberto Madrid 11/11/2025 se quito el else ya que se bajo la pagina de sensaelectrica
+            'Else
+            'Gilberto Madrid 30/07/2019 agregamos proceso para copiado de archivos electronicos para clientes del portal
+            'Gilberto Madrid 08/08/2019 se queda temporalmente manual
+            'Gilberto Madrid 09/08/2019 se habilito de nuevo
+            'Gilberto Madrid 10/08/2019 se agrego un parametro para omitir la pregunta
+            'Gilberto Madrid 05/11/2025 se quito esto ya que se dio de baja la pagina
+            'plCopiaArchivosRutaPortal(True)
+            'Gilberto Madrid 07/09/2020 se agrega la ejecucion de los webservice para comunicarnos con los proveedores
+            plEjecutaWebServices()
 
-                'Gilberto Madrid 07/09/2020 se agrega la ejecucion de los webservice para comunicarnos con los proveedores
-                plEjecutaWebServices()
-
-            End If
+            'End If
 
 
         Catch ex As Exception
 
-            NtiMensaje.BalloonTipIcon = ToolTipIcon.Info
-            NtiMensaje.BalloonTipText = ex.Message
-            NtiMensaje.BalloonTipTitle = "Error ejecución trabajos"
-            NtiMensaje.ShowBalloonTip(2000)
+            Loggers.e("Error ejecución trabajos " + ex.Message, ex, MyClass.GetType.Name)
 
         End Try
 
@@ -565,6 +701,11 @@ Public Class frmMDI
             Dim vlNombreWS As String
             Dim vlExcluirColumnas As String
 
+            Dim cUrl As String
+            Dim cMetodoConsumo As String
+            Dim cTipoContenido As String
+            Dim cCabeceros As String
+
             IgnoraFechaHora = False
 
             For i As Integer = 0 To conexion.dtWebServices.Rows.Count - 1
@@ -578,6 +719,11 @@ Public Class frmMDI
                 vlNombreWS = conexion.dtWebServices.Rows(i)("cNombreTrabajo").ToString.Trim
                 vlExcluirColumnas = ""
 
+                cUrl = conexion.dtWebServices.Rows(i)("cUrl").ToString.Trim
+                cMetodoConsumo = conexion.dtWebServices.Rows(i)("cMetodoConsumo").ToString.Trim
+                cTipoContenido = conexion.dtWebServices.Rows(i)("cTipoContenido").ToString.Trim
+                cCabeceros = conexion.dtWebServices.Rows(i)("cCabeceros").ToString.Trim
+
 
                 If IgnoraFechaHora = False Then
 
@@ -588,7 +734,7 @@ Public Class frmMDI
                             If FechaUltimaEjecucion.ToString("yyyy-MM-dd") <= Date.Now.ToString("yyyy-MM-dd") Then
 
                                 If Date.Now.ToString("HH:ss") > HoraEjecucion Then
-                                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas)
+                                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas, cUrl, cMetodoConsumo, cTipoContenido, cCabeceros)
                                 End If
 
                             End If
@@ -597,7 +743,7 @@ Public Class frmMDI
 
                             If DateDiff(DateInterval.Day, FechaUltimaEjecucion, Date.Now) >= 7 Then
                                 If Date.Now.ToString("HH:ss") > HoraEjecucion Then
-                                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas)
+                                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas, cUrl, cMetodoConsumo, cTipoContenido, cCabeceros)
                                 End If
                             End If
 
@@ -607,7 +753,7 @@ Public Class frmMDI
                                 If FechaUltimaEjecucion.ToString("dd") <= Date.Now.ToString("dd") Then
 
                                     If Date.Now.ToString("HH:ss") > HoraEjecucion Then
-                                        plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas)
+                                        plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas, cUrl, cMetodoConsumo, cTipoContenido, cCabeceros)
                                     End If
 
                                 End If
@@ -619,7 +765,7 @@ Public Class frmMDI
 
                 Else
 
-                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas)
+                    plEjecutaWS(vlCodigoSQL, vlParametrosSQL, vlNombreWS, vlExcluirColumnas, cUrl, cMetodoConsumo, cTipoContenido, cCabeceros)
 
                 End If
 
@@ -629,7 +775,7 @@ Public Class frmMDI
 
 
     End Sub
-    Sub plEjecutaWS(prmCodigoSQLEjecuta As String, prmParametrosWS As String, prmNombreWS As String, prmExcluirColumnas As String)
+    Sub plEjecutaWS(prmCodigoSQLEjecuta As String, prmParametrosWS As String, prmNombreWS As String, prmExcluirColumnas As String, Optional prmUrl As String = "", Optional prmCmetodo As String = "", Optional prmCtipoContenido As String = "", Optional prmCCabeceros As String = "")
 
         Dim dtResultadoWS As DataTable
         Dim vlCuerpoCorreo As String
@@ -648,6 +794,7 @@ Public Class frmMDI
 
                     Case "EnviaDatosSiemensInventarioWS"
 
+                        Loggers.d("Se ejecutara el servicio web EnviaDatosSiemensInventarioWS", MyClass.GetType.Name)
 
                         'Gilberto Madrid 16/12/2020 el proveedor cambio de servidor el webservice que entrara forzosamente en el 2021
                         Dim vlServicioWeb As New WSSiemens2020.Service1
@@ -698,6 +845,8 @@ Public Class frmMDI
 
                         textoJson = Json.JsonConvert.SerializeObject(ListaProductos, Json.Formatting.None)
 
+                        Loggers.d("Este es el json que se enviara al servicio web EnviaDatosSiemensInventarioWS" + vbCr + textoJson, MyClass.GetType.Name)
+
                         bytValue = Encoding.UTF8.GetBytes(textoJson.ToCharArray)
 
                         bytEncoded = EncryptSiemens.Encryption.EncryptToBytes_AesCustomer(bytValue, bytKey, bytIV)
@@ -712,9 +861,13 @@ Public Class frmMDI
                             conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, textoJson)
                             conexion.TerminaTransaccion()
 
+                            Loggers.d("WS EnviaDatosSiemensInventarioWS ejecutado correctamente", MyClass.GetType.Name)
+
                         End If
 
                     Case "EnviaDatosSiemensVentaWS"
+
+                        Loggers.d("Se ejecutara el servicio web EnviaDatosSiemensVentaWS", MyClass.GetType.Name)
 
                         'Gilberto Madrid 16/12/2020 el proveedor cambio de servidor el webservice que entrara forzosamente en el 2021
                         'Dim vlServicioWeb As New WSSiemens.Service1
@@ -764,6 +917,8 @@ Public Class frmMDI
 
                         textoJson = Json.JsonConvert.SerializeObject(ListaProductos, Json.Formatting.None)
 
+                        Loggers.d("Este es el json que se enviara al servicio web EnviaDatosSiemensVentaWS" + vbCr + textoJson, MyClass.GetType.Name)
+
                         bytValue = Encoding.UTF8.GetBytes(textoJson.ToCharArray)
 
                         bytEncoded = EncryptSiemens.Encryption.EncryptToBytes_AesCustomer(bytValue, bytKey, bytIV)
@@ -778,9 +933,260 @@ Public Class frmMDI
                             conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, textoJson)
                             conexion.TerminaTransaccion()
 
+                            Loggers.d("WS EnviaDatosSiemensVentaWS ejecutado correctamente", MyClass.GetType.Name)
+
                         End If
 
+                    Case "EnviaDatosSiemensVentaWS_REST"
 
+                        Dim uri As Uri
+                        Dim vlCuerpo As String
+
+                        Loggers.d("Se ejecutara el servicio web EnviaDatosSiemensVentaWS_REST", MyClass.GetType.Name)
+
+                        uri = New Uri(prmUrl)
+                        vlCuerpo = Newtonsoft.Json.JsonConvert.SerializeObject(dtResultadoWS, Newtonsoft.Json.Formatting.None)
+
+                        Loggers.d("El cuerpo que se enviara al servicio EnviaDatosSiemensVentaWS_REST - " + vbCr + vlCuerpo, MyClass.GetType.Name)
+
+                        Dim data As Byte() = Encoding.UTF8.GetBytes(vlCuerpo)
+                        Dim vlRequest As HttpWebRequest = CType(WebRequest.Create(uri), HttpWebRequest)
+
+                        Select Case prmCmetodo
+                            Case "GET"
+                                vlRequest.Method = HttpMethod.Get.Method
+                            Case "POST"
+                                vlRequest.Method = HttpMethod.Post.Method
+                            Case "PUT"
+                                vlRequest.Method = HttpMethod.Put.Method
+                            Case "DELETE"
+                                vlRequest.Method = HttpMethod.Delete.Method
+
+                        End Select
+
+                        vlRequest.ContentType = prmCtipoContenido
+                        vlRequest.ContentLength = data.Length
+
+                        Dim vlCabeceros() As CabecerosRequest = Newtonsoft.Json.JsonConvert.DeserializeObject(Of CabecerosRequest())(prmCCabeceros)
+
+                        For Each cab As CabecerosRequest In vlCabeceros
+                            vlRequest.Headers.Add(cab.cabecero, cab.valor)
+                        Next
+
+                        Dim stream As Stream = vlRequest.GetRequestStream()
+
+                        stream.Write(data, 0, data.Length)
+                        stream.Close()
+
+                        Dim result As HttpWebResponse = CType(vlRequest.GetResponse(), HttpWebResponse)
+
+                        Dim streamResponse = result.GetResponseStream()
+
+                        Dim reader = New StreamReader(streamResponse)
+
+
+                        Dim receiveContent = reader.ReadToEnd()
+
+                        reader.Close()
+
+                        If result.StatusCode >= HttpStatusCode.OK And result.StatusCode < HttpStatusCode.Ambiguous Then
+
+                            vlFechaHoraFin = Now
+                            'aqui guardamos en el historial
+                            conexion.IniciaTransaccion()
+                            conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, vlCuerpo)
+                            conexion.TerminaTransaccion()
+
+                            Loggers.d("WS EnviaDatosSiemensVentaWS_REST ejecutado correctamente", MyClass.GetType.Name)
+                        Else
+                            Loggers.d("Error al ejecutar el servicio EnviaDatosSiemensVentaWS_REST - " + result.StatusCode.ToString + " - " + receiveContent, MyClass.GetType.Name)
+                        End If
+
+                    'Case "ObtenerIPPublica"
+
+                    '    Dim uri As Uri
+                    '    Dim vlCuerpo As String
+
+                    '    uri = New Uri(prmUrl)
+
+                    '    Dim vlRequest As HttpWebRequest = CType(WebRequest.Create(uri), HttpWebRequest)
+
+                    '    Select Case prmCmetodo
+                    '        Case "GET"
+                    '            vlRequest.Method = HttpMethod.Get.Method
+                    '        Case "POST"
+                    '            vlRequest.Method = HttpMethod.Post.Method
+                    '        Case "PUT"
+                    '            vlRequest.Method = HttpMethod.Put.Method
+                    '        Case "DELETE"
+                    '            vlRequest.Method = HttpMethod.Delete.Method
+
+                    '    End Select
+
+                    '    vlRequest.ContentType = prmCtipoContenido
+
+                    '    Dim result As HttpWebResponse = CType(vlRequest.GetResponse(), HttpWebResponse)
+
+                    '    Dim streamResponse = result.GetResponseStream()
+
+                    '    Dim reader = New StreamReader(streamResponse)
+
+                    '    Dim receiveContent = reader.ReadToEnd()
+
+                    '    reader.Close()
+
+                    '    If result.StatusCode >= HttpStatusCode.OK And result.StatusCode < HttpStatusCode.Ambiguous Then
+
+                    '        vlFechaHoraFin = Now
+                    '        'aqui guardamos en el historial
+                    '        conexion.IniciaTransaccion()
+                    '        conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, receiveContent)
+                    '        conexion.TerminaTransaccion()
+
+                    '        Loggers.d("WS ObtenerIPPublica ejecutado correctamente", MyClass.GetType.Name)
+
+                    '    End If
+
+                    'Case "ActualizaIPFirewallAzure"
+
+                    '    Dim vlObtenerTokenAzure As String
+
+                    '    vlObtenerTokenAzure = flObtenerTokenAzure()
+
+                    '    If vlObtenerTokenAzure.Trim = "" Then
+                    '        Exit Sub
+                    '    End If
+
+                    '    Dim uri As Uri
+                    '    Dim vlCuerpo As String
+
+                    '    uri = New Uri(prmUrl)
+                    '    vlCuerpo = dtResultadoWS.Rows(0)("ip").ToString.Trim
+
+                    '    'Gilberto Madrid 09/02/2024 validamos que no nos regrese 0 ya que en ese caso no pudo obtener la IP
+                    '    If Trim(vlCuerpo) = "0" Then
+                    '        Loggers.d("WS ActualizaIPFirewallAzure no se actualizo la ip ya que el store regreso 0", MyClass.GetType.Name)
+                    '    End If
+
+                    '    Dim data As Byte() = Encoding.UTF8.GetBytes(vlCuerpo)
+                    '    Dim vlRequest As HttpWebRequest = CType(WebRequest.Create(uri), HttpWebRequest)
+
+                    '    Select Case prmCmetodo
+                    '        Case "GET"
+                    '            vlRequest.Method = HttpMethod.Get.Method
+                    '        Case "POST"
+                    '            vlRequest.Method = HttpMethod.Post.Method
+                    '        Case "PUT"
+                    '            vlRequest.Method = HttpMethod.Put.Method
+                    '        Case "DELETE"
+                    '            vlRequest.Method = HttpMethod.Delete.Method
+
+                    '    End Select
+
+                    '    vlRequest.ContentType = prmCtipoContenido
+                    '    vlRequest.ContentLength = data.Length
+
+
+                    '    vlRequest.Headers.Add("Authorization", vlObtenerTokenAzure)
+
+                    '    Dim stream As Stream = vlRequest.GetRequestStream()
+
+                    '    stream.Write(data, 0, data.Length)
+                    '    stream.Close()
+
+                    '    Dim result As HttpWebResponse = CType(vlRequest.GetResponse(), HttpWebResponse)
+
+                    '    Dim streamResponse = result.GetResponseStream()
+
+                    '    Dim reader = New StreamReader(streamResponse)
+
+
+                    '    Dim receiveContent = reader.ReadToEnd()
+
+                    '    reader.Close()
+
+                    '    If result.StatusCode >= HttpStatusCode.OK And result.StatusCode < HttpStatusCode.Ambiguous Then
+
+                    '        vlFechaHoraFin = Now
+                    '        'aqui guardamos en el historial
+                    '        conexion.IniciaTransaccion()
+                    '        conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, vlCuerpo)
+                    '        conexion.TerminaTransaccion()
+
+                    '        Loggers.d("WS ActualizaIPFirewallAzure ejecutado correctamente", MyClass.GetType.Name)
+
+                    '    End If
+
+                    Case "EjecutaPlantillaMailing"
+
+                        Dim uri As Uri
+                        Dim vlCuerpo As String
+
+                        uri = New Uri(prmUrl)
+                        vlCuerpo = dtResultadoWS.Rows(0)("Body").ToString.Trim
+
+                        If Trim(vlCuerpo) = "" Then
+                            Loggers.d("No se obtuvo resultados del query para la ejecución de la plantilla", MyClass.GetType.Name)
+                            conexion.IniciaTransaccion()
+                            conexion.EjecutaTexto("UPDATE SES_Trabajos_WS SET bActivo=0 WHERE cNombreTrabajo='EjecutaPlantillaMailing'")
+                            conexion.TerminaTransaccion()
+                        End If
+
+                        Dim data As Byte() = Encoding.UTF8.GetBytes(vlCuerpo)
+                        Dim vlRequest As HttpWebRequest = CType(WebRequest.Create(uri), HttpWebRequest)
+
+                        Select Case prmCmetodo
+                            Case "GET"
+                                vlRequest.Method = HttpMethod.Get.Method
+                            Case "POST"
+                                vlRequest.Method = HttpMethod.Post.Method
+                            Case "PUT"
+                                vlRequest.Method = HttpMethod.Put.Method
+                            Case "DELETE"
+                                vlRequest.Method = HttpMethod.Delete.Method
+
+                        End Select
+
+                        vlRequest.ContentType = prmCtipoContenido
+                        vlRequest.ContentLength = data.Length
+
+                        Dim vlCabeceros() As CabecerosRequest = Newtonsoft.Json.JsonConvert.DeserializeObject(Of CabecerosRequest())(prmCCabeceros)
+
+                        For Each cab As CabecerosRequest In vlCabeceros
+                            vlRequest.Headers.Add(cab.cabecero, cab.valor)
+                        Next
+
+                        Dim stream As Stream = vlRequest.GetRequestStream()
+
+                        stream.Write(data, 0, data.Length)
+                        stream.Close()
+
+                        Dim result As HttpWebResponse = CType(vlRequest.GetResponse(), HttpWebResponse)
+
+                        Dim streamResponse = result.GetResponseStream()
+
+                        Dim reader = New StreamReader(streamResponse)
+
+
+                        Dim receiveContent = reader.ReadToEnd()
+
+                        reader.Close()
+
+                        If result.StatusCode >= HttpStatusCode.OK And result.StatusCode < HttpStatusCode.Ambiguous Then
+
+                            vlFechaHoraFin = Now
+                            'aqui guardamos en el historial
+                            conexion.IniciaTransaccion()
+                            conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, vlCuerpo)
+                            conexion.TerminaTransaccion()
+
+                            Loggers.d("WS Plantilla mailing ejecutado correctamente", MyClass.GetType.Name)
+
+                        End If
+
+                        conexion.IniciaTransaccion()
+                        conexion.EjecutaTexto("UPDATE SES_Trabajos_WS SET bActivo=0 WHERE cNombreTrabajo='EjecutaPlantillaMailing'")
+                        conexion.TerminaTransaccion()
 
                 End Select
 
@@ -789,11 +1195,47 @@ Public Class frmMDI
             End If
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message)
+            Loggers.e("Error al ejecutar los WS " + ex.Message, ex, MyClass.GetType.Name)
         End Try
 
     End Sub
 
+    Function flObtenerTokenAzure() As String
+
+        flObtenerTokenAzure = ""
+
+        If conexion.flTraeWsTokenAzure() = True Then
+            If conexion.Mensaje = "" Then
+
+                Dim http As New Chilkat.Http
+
+                Dim req As New Chilkat.HttpRequest
+
+                Dim vlCabeceros() As CabecerosRequest = Newtonsoft.Json.JsonConvert.DeserializeObject(Of CabecerosRequest())(conexion.dtaux2.Rows(0)("cCabeceros").ToString.Trim)
+
+                For Each cab As CabecerosRequest In vlCabeceros
+                    req.AddParam(cab.cabecero, cab.valor)
+                Next
+
+                Dim resp As Chilkat.HttpResponse = http.PostUrlEncoded(conexion.dtaux2.Rows(0)("cUrl").ToString.Trim, req)
+                If (http.LastMethodSuccess = False) Then
+                    Loggers.e("Error al ejecutar el WS para obtener toke", New Exception("Error"), MyClass.GetType.Name)
+                End If
+
+                Dim respStatusCode As Integer = resp.StatusCode
+
+                Dim json As New Chilkat.JsonObject
+                json.EmitCompact = False
+                json.Load(resp.BodyStr)
+
+                Dim access_token As String = json.StringOf("access_token")
+
+                flObtenerTokenAzure = "Bearer " + access_token
+
+            End If
+        End If
+
+    End Function
     Class ProductoWSInventario
 
         Public CustomerNumberSAP As String = ""
@@ -832,7 +1274,7 @@ Public Class frmMDI
         Dim cCuerpoCorreo As String = ""
         Dim CorreosTimbre
         Dim bMandaCorreo As Boolean
-        Dim vlcMensajeError As String    
+        Dim vlcMensajeError As String
 
         If conexion.Mensaje = "" Then
             For i As Integer = 0 To conexion.dtTrabajos.Rows.Count - 1
@@ -884,6 +1326,9 @@ Public Class frmMDI
 
                                         cCuerpoCorreo = cCuerpoCorreo + vbCrLf
                                     End If
+
+                                    Loggers.d("Trabajo programado " + conexion.dtTrabajos.Rows(i)("Nombre").ToString.Trim + " ejecutado correctamente", MyClass.GetType.Name)
+
                                 End If
                             End If
                         Case "Mensual"
@@ -910,6 +1355,9 @@ Public Class frmMDI
 
                                         cCuerpoCorreo = cCuerpoCorreo + vbCrLf
                                     End If
+
+                                    Loggers.d("Trabajo programado " + conexion.dtTrabajos.Rows(i)("Nombre").ToString.Trim + " ejecutado correctamente", MyClass.GetType.Name)
+
                                 End If
                             End If
                         Case "Anual"
@@ -937,42 +1385,62 @@ Public Class frmMDI
 
                                         cCuerpoCorreo = cCuerpoCorreo + vbCrLf
                                     End If
+
+                                    Loggers.d("Trabajo programado " + conexion.dtTrabajos.Rows(i)("Nombre").ToString.Trim + " ejecutado correctamente", MyClass.GetType.Name)
+
                                 End If
                             End If
                     End Select
                 Catch ex As Exception
+                    Loggers.e("Error al ejecutar los trabajos programados " + ex.Message, ex, MyClass.GetType.Name)
                     conexion.Mensaje = ex.Message
                 End Try
             Next
             If cCuerpoCorreo <> "" Then
-                conexion.TraeCorreosParaEnvioInformacionTimbres()
-                If conexion.Mensaje = "" Then
-                    If conexion.dtTimbresLibres.Rows.Count > 0 Then
-                        CorreosTimbre = Split(conexion.dtTimbresLibres.Rows(0)("cValor"), ",")
+                Try
+                    Dim cCorreosSinSeparar As String
+                    conexion.TraeCorreosParaEnvioInformacionTimbres()
+                    If conexion.Mensaje = "" Then
+                        If conexion.dtTimbresLibres.Rows.Count > 0 Then
+                            cCorreosSinSeparar = conexion.dtTimbresLibres.Rows(0)("cValor").ToString.Trim
+                            CorreosTimbre = Split(conexion.dtTimbresLibres.Rows(0)("cValor"), ",")
+                        Else
+                            Exit Sub
+                        End If
                     Else
                         Exit Sub
                     End If
-                Else
-                    Exit Sub
-                End If
-                correo = New MailMessage
-                servidor = New SmtpClient
-                correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-                For i As Integer = 0 To DirectCast(CorreosTimbre, String()).Length - 1
-                    If CorreosTimbre(i).Trim() <> "" Then
-                        correo.CC.Add(CorreosTimbre(i).Trim())
+                    'Gilberto Madrid 12/11/2025 si esta encendido este parametro se manda por sendmailapi
+                    If Configuracion.FuncionPortal = False Then
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+                        correo = New MailMessage
+                        servidor = New SmtpClient
+                        correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+
+                        For i As Integer = 0 To DirectCast(CorreosTimbre, String()).Length - 1
+                            If CorreosTimbre(i).Trim() <> "" Then
+                                correo.CC.Add(CorreosTimbre(i).Trim())
+                            End If
+                        Next
+                        correo.Subject = "Correo informativo de trabajos programados " + " Suc : " + Configuracion.noSucursal.ToString.Trim + " | " + " | BD | " + Configuracion.BaseDeDatos
+                        correo.Body = cCuerpoCorreo
+
+                        correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+
+                        servidor.Host = Configuracion.ServidorSalidaCorreo
+                        servidor.Port = CInt(Configuracion.PuertoCorreo)
+                        servidor.EnableSsl = Configuracion.UsaSSL
+                        servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
+                        servidor.Send(correo)
+                    Else
+                        plSendMailApi("Notificaciones", "Correo informativo de trabajos programados " + " Suc : " + Configuracion.noSucursal.ToString.Trim + " | " + " | BD | " + Configuracion.BaseDeDatos, cCuerpoCorreo, cCorreosSinSeparar, "")
                     End If
-                Next
-                correo.Subject = "Correo informativo de trabajos programados " + " Suc : " + Configuracion.noSucursal.ToString.Trim + " | " + " | BD | " + Configuracion.BaseDeDatos
-                correo.Body = cCuerpoCorreo
 
-                correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
 
-                servidor.Host = Configuracion.ServidorSalidaCorreo
-                servidor.Port = CInt(Configuracion.PuertoCorreo)
-                servidor.EnableSsl = Configuracion.UsaSSL
-                servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
-                servidor.Send(correo)
+                Catch ex As Exception
+                    Loggers.e("Error al enviar correo de los trabajos programados " + ex.Message, ex, MyClass.GetType.Name)
+                End Try
+
             End If
         End If
 
@@ -1170,20 +1638,16 @@ Public Class frmMDI
 
                 Next
 
-                NtiMensaje.BalloonTipIcon = ToolTipIcon.Info
-                NtiMensaje.BalloonTipText = "Archivos copiados correctamente"
-                NtiMensaje.BalloonTipTitle = "archivos copiados"
-                NtiMensaje.ShowBalloonTip(2000)
+                Loggers.d("Archivos copiados correctamente", MyClass.GetType().Name)
 
             End If
 
             Exit Sub
 
         Catch ex As Exception
-            NtiMensaje.BalloonTipIcon = ToolTipIcon.Info
-            NtiMensaje.BalloonTipText = ex.Message
-            NtiMensaje.BalloonTipTitle = "Error copiado de archivos"
-            NtiMensaje.ShowBalloonTip(2000)
+
+            Loggers.e("Error copiado de archivos " + ex.Message, ex, MyClass.GetType.Name)
+
         End Try
 
 
@@ -1203,10 +1667,7 @@ Public Class frmMDI
             EjecutaSolicitudAutorizacionCorreo()
 
         Catch ex As Exception
-            NtiMensaje.BalloonTipIcon = ToolTipIcon.Info
-            NtiMensaje.BalloonTipText = ex.Message
-            NtiMensaje.BalloonTipTitle = "Error ejecución autorización por correo"
-            NtiMensaje.ShowBalloonTip(2000)
+            Loggers.e("Error ejecución autorización por correo " + ex.Message, ex, MyClass.GetType.Name)
         End Try
 
         tmrSolicitudAutorizacionCorreo.Enabled = True
@@ -1333,18 +1794,21 @@ Public Class frmMDI
                 vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
                 vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
 
+                'Gilberto Madrid 12/11/2025 si esta encendido este parametro se manda por sendmailapi
+                If Configuracion.FuncionPortal = False Then
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+                    correo = New MailMessage
+                    servidor = New SmtpClient
+                    correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+                    correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim)
 
-                correo = New MailMessage
-                servidor = New SmtpClient
-                correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-                correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim)
+                    'César Niebla 28/09/2022 En caso de que el mail de supervisor configurado para copia no venga dentro de los correos lo anexamos
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
+                        correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim)
+                    End If
 
-                'César Niebla 28/09/2022 En caso de que el mail de supervisor configurado para copia no venga dentro de los correos lo anexamos
-                If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
-                    correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim)
-                End If
+                    correo.CC.Add("notificaciones@sensa.com.mx")
 
-                correo.CC.Add("notificaciones@sensa.com.mx")
 
                     Dim vlArchivosAdjuntos
                     Dim vlNombreArchivo As String
@@ -1383,14 +1847,13 @@ Public Class frmMDI
 
                     correo.Subject = vlAsunto
                     correo.Body = vlCuerpoCorreo
-                correo.IsBodyHtml = True
+                    correo.IsBodyHtml = True
+                    correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
 
-                correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-
-                servidor.Host = Configuracion.ServidorSalidaCorreo
-                servidor.Port = CInt(Configuracion.PuertoCorreo)
-                servidor.EnableSsl = Configuracion.UsaSSL
-                servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
+                    servidor.Host = Configuracion.ServidorSalidaCorreo
+                    servidor.Port = CInt(Configuracion.PuertoCorreo)
+                    servidor.EnableSsl = Configuracion.UsaSSL
+                    servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
                     servidor.Send(correo)
 
                     vlCuerpoCorreo = "<!DOCTYPE html>" + vbCr
@@ -1418,23 +1881,87 @@ Public Class frmMDI
                     correo.CC.Add("notificaciones@sensa.com.mx")
 
                     correo.Body = vlCuerpoCorreo
-                correo.IsBodyHtml = True
+                    correo.IsBodyHtml = True
 
-                correo.Sender = New MailAddress(Configuracion.Sender)
+                    correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
 
-                servidor.Host = Configuracion.ServidorSalidaCorreo
+                    servidor.Host = Configuracion.ServidorSalidaCorreo
                     servidor.Port = Configuracion.PuertoCorreo
                     servidor.EnableSsl = Configuracion.UsaSSL
                     servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
                     servidor.Send(correo)
 
-                    conexion.IniciaTransaccion()
-                    conexion.plActualizaSolicitudAutorizacionEnviada(prmID)
-                    conexion.TerminaTransaccion()
+                Else
+                    Dim cCorreosSinSeparar As String
+                    Dim vlArchivosSinSeparar As String
+                    cCorreosSinSeparar = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
+                        cCorreosSinSeparar = cCorreosSinSeparar + "," + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim
+                    End If
+                    cCorreosSinSeparar = cCorreosSinSeparar + ",notificaciones@sensa.com.mx"
+
+                    Dim vlArchivosAdjuntos
+                    Dim vlparametros
+                    Dim vlNombreArchivo As String
+                    Dim ArchivoSolicitudAutorizacion As String
+                    vlArchivosSinSeparar = ""
+
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim <> "" Then
+                        vlArchivosAdjuntos = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim.Split(",")
+                        For j As Integer = 0 To DirectCast(vlArchivosAdjuntos, String()).Length - 1
+                            If vlArchivosAdjuntos(j).ToString.Trim.Contains("_Libre") Then
+                                vlparametros = vlArchivosAdjuntos(j).ToString.Trim.Replace("_Libre", "").Split(",")
+                                vlNombreArchivo = CreaArchivoNotificacion("CotizacionLibre.rpt", vlparametros)
+                                'vlArchivosSinSeparar = vlArchivosSinSeparar + flSubirArchivoFTP("Notificaciones", vlNombreArchivo) + ","
+                                vlArchivosSinSeparar = vlNombreArchivo + ","
+                            Else
+                                vlparametros = (vlArchivosAdjuntos(j).ToString.Trim + ",").Split(",")
+                                vlNombreArchivo = CreaArchivoNotificacion("Cotizacion.rpt", vlparametros)
+                                'vlArchivosSinSeparar = vlArchivosSinSeparar + flSubirArchivoFTP("Notificaciones", vlNombreArchivo) + ","
+                                vlArchivosSinSeparar = vlArchivosSinSeparar + vlNombreArchivo + ","
+                            End If
+                        Next
+                    End If
+
+                    plSendMailApi("Notificaciones", vlAsunto, vlCuerpoCorreo, cCorreosSinSeparar, vlArchivosSinSeparar)
+
+                    vlCuerpoCorreo = "<!DOCTYPE html>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<html lang=""en"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta charset=""UTF-8"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "</head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<font color=""#084B8A"" face=""Arial"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <p><b>Buen día</b></p>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Se ha enviado su solicitud de autorización para facturar a este cliente fuera del nivel de precios establecido para la sucursal de <b>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("Sucursal").ToString.Trim + "</b>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br>Una vez se tenga la respuesta del supervisor se le notificará por email.</p>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "     <p> <b>Fecha Solicitud:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("FechaSolicitud").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Cliente:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("Cliente").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Solicita:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioSolicita").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Autoriza:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioAutoriza").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Permisos solicitado:</b> <u>" + vlPermisos + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Mensaje:</b> " + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cMensaje").ToString.Trim + " </p>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
+                    cCorreosSinSeparar = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSolicito").ToString.Trim + ",notificaciones@sensa.com.mx"
+
+                    plSendMailApi("Notificaciones", vlAsunto, vlCuerpoCorreo, cCorreosSinSeparar, vlArchivosSinSeparar)
 
                 End If
 
+
+
+
+                conexion.IniciaTransaccion()
+                conexion.plActualizaSolicitudAutorizacionEnviada(prmID)
+                conexion.TerminaTransaccion()
+
+
             End If
+
+
+        End If
 
     End Sub
 
@@ -1504,7 +2031,7 @@ Public Class frmMDI
 
 
                 'César Niebla 18/08/2021 En caso de que se haya rechazado la solicitud procedemos a obtener el motivo de la cancelación
-                vlMotivoRechazoSolicitud=""
+                vlMotivoRechazoSolicitud = ""
 
                 If Not vlbAprobado Then
                     vlMotivoRechazoSolicitud = conexion.FlTraeDescripcionMotivoCancelacion(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cMotivoRechazoSolicitud").ToString.Trim)
@@ -1536,106 +2063,174 @@ Public Class frmMDI
                 vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
                 vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
 
+                'Gilberto Madrid 12/11/2025 si esta encendido este parametro se manda por sendmailapi
+                If Configuracion.FuncionPortal = False Then
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+                    correo = New MailMessage
 
-                correo = New MailMessage
-                servidor = New SmtpClient
-                correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+                    servidor = New SmtpClient
+                    correo.From = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
 
-                correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim)
+                    correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim)
 
-                'César Niebla 28/09/2022 En caso de que el mail de supervisor configurado para copia no venga dentro de los correos lo anexamos
-                If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
-                    correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim)
-                End If
+                    'César Niebla 28/09/2022 En caso de que el mail de supervisor configurado para copia no venga dentro de los correos lo anexamos
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
+                        correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim)
+                    End If
 
-                correo.CC.Add("notificaciones@sensa.com.mx")
+                    correo.CC.Add("notificaciones@sensa.com.mx")
 
-                Dim vlArchivosAdjuntos
-                Dim vlNombreArchivo As String
-                Dim ArchivoSolicitudAutorizacion As Attachment
-                Dim vlparametros
+                    Dim vlArchivosAdjuntos
+                    Dim vlNombreArchivo As String
+                    Dim ArchivoSolicitudAutorizacion As Attachment
+                    Dim vlparametros
 
-                'Gilberto Madrid 28/11/2020 faltaba validar que no viniera en blanco el dato de cotizaciones 
-                If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim <> "" Then
+                    'Gilberto Madrid 28/11/2020 faltaba validar que no viniera en blanco el dato de cotizaciones 
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim <> "" Then
 
-                    vlArchivosAdjuntos = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim.Split(",")
+                        vlArchivosAdjuntos = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim.Split(",")
 
-                    For j As Integer = 0 To DirectCast(vlArchivosAdjuntos, String()).Length - 1
+                        For j As Integer = 0 To DirectCast(vlArchivosAdjuntos, String()).Length - 1
 
-                        If vlArchivosAdjuntos(j).ToString.Trim.Contains("_Libre") Then
-                            vlparametros = vlArchivosAdjuntos(j).ToString.Trim.Replace("_Libre", "").Split(",")
-                            vlNombreArchivo = CreaArchivoNotificacion("CotizacionLibre.rpt", vlparametros)
+                            If vlArchivosAdjuntos(j).ToString.Trim.Contains("_Libre") Then
+                                vlparametros = vlArchivosAdjuntos(j).ToString.Trim.Replace("_Libre", "").Split(",")
+                                vlNombreArchivo = CreaArchivoNotificacion("CotizacionLibre.rpt", vlparametros)
 
-                            ArchivoSolicitudAutorizacion = New Attachment(vlNombreArchivo)
-                            correo.Attachments.Add(ArchivoSolicitudAutorizacion)
+                                ArchivoSolicitudAutorizacion = New Attachment(vlNombreArchivo)
+                                correo.Attachments.Add(ArchivoSolicitudAutorizacion)
 
-                        Else
+                            Else
 
-                            vlparametros = (vlArchivosAdjuntos(j).ToString.Trim + ",").Split(",")
+                                vlparametros = (vlArchivosAdjuntos(j).ToString.Trim + ",").Split(",")
 
-                            vlNombreArchivo = CreaArchivoNotificacion("Cotizacion.rpt", vlparametros)
+                                vlNombreArchivo = CreaArchivoNotificacion("Cotizacion.rpt", vlparametros)
 
-                            ArchivoSolicitudAutorizacion = New Attachment(vlNombreArchivo)
-                            correo.Attachments.Add(ArchivoSolicitudAutorizacion)
+                                ArchivoSolicitudAutorizacion = New Attachment(vlNombreArchivo)
+                                correo.Attachments.Add(ArchivoSolicitudAutorizacion)
 
-                        End If
-
-
-
-                    Next
-
-                End If
-
-                correo.Subject = vlAsunto
-                correo.Body = vlCuerpoCorreo
-                correo.IsBodyHtml = True
-
-                correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-                servidor.Host = Configuracion.ServidorSalidaCorreo
-                servidor.Port = CInt(Configuracion.PuertoCorreo)
-                servidor.EnableSsl = Configuracion.UsaSSL
-                servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
-                servidor.Send(correo)
+                            End If
 
 
-                vlCuerpoCorreo = "<!DOCTYPE html>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "<html lang=""en"">" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "<head>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "    <meta charset=""UTF-8"">" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "</head>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "<body>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "<font color=""#084B8A"" face=""Arial"">" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + "    <p><b>Buen día</b></p>" + vbCr
-                If vlbAprobado = True Then
-                    vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:green""><b>APROBADA</b></span> por parte del supervisor.</p>"
+
+                        Next
+
+                    End If
+
+                    correo.Subject = vlAsunto
+                    correo.Body = vlCuerpoCorreo
+                    correo.IsBodyHtml = True
+                    correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+                    servidor.Host = Configuracion.ServidorSalidaCorreo
+                    servidor.Port = CInt(Configuracion.PuertoCorreo)
+                    servidor.EnableSsl = Configuracion.UsaSSL
+                    servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
+                    servidor.Send(correo)
+
+                    vlCuerpoCorreo = "<!DOCTYPE html>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<html lang=""en"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta charset=""UTF-8"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "</head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<font color=""#084B8A"" face=""Arial"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <p><b>Buen día</b></p>" + vbCr
+                    If vlbAprobado = True Then
+                        vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:green""><b>APROBADA</b></span> por parte del supervisor.</p>"
+                    Else
+                        '19/08/2021 César Niebla | Concatenamos el motivo de rechazo al cuerpo de correo de notificación
+                        vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:red""><b>RECHAZADA (" + vlMotivoRechazoSolicitud + ") </b></span> por parte del supervisor.</p>"
+                    End If
+                    vlCuerpoCorreo = vlCuerpoCorreo + "     <p> <b>Fecha Solicitud:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("FechaSolicitud").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Cliente:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("Cliente").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Solicita:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioSolicita").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Autoriza:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioAutoriza").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Permisos solicitado:</b> <u>" + vlPermisos + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Mensaje:</b> " + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cMensaje").ToString.Trim + " </p>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
+
+                    correo.CC.Clear()
+                    correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSolicito").ToString.Trim)
+                    correo.CC.Add("notificaciones@sensa.com.mx")
+
+                    correo.Body = vlCuerpoCorreo
+                    correo.IsBodyHtml = True
+
+                    correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
+
+                    servidor.Host = Configuracion.ServidorSalidaCorreo
+                    servidor.Port = CInt(Configuracion.PuertoCorreo)
+                    servidor.EnableSsl = Configuracion.UsaSSL
+                    servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
+                    servidor.Send(correo)
                 Else
-                    '19/08/2021 César Niebla | Concatenamos el motivo de rechazo al cuerpo de correo de notificación
-                    vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:red""><b>RECHAZADA (" + vlMotivoRechazoSolicitud + ") </b></span> por parte del supervisor.</p>"
+                    Dim cCorreosSinSeparar As String
+                    Dim cArchivosSinSeparar As String
+                    cCorreosSinSeparar = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim
+
+                    'César Niebla 28/09/2022 En caso de que el mail de supervisor configurado para copia no venga dentro de los correos lo anexamos
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailAutoriza").ToString.Trim <> conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim Then
+                        cCorreosSinSeparar = cCorreosSinSeparar + "," + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSupervisorCopia").ToString.Trim
+                    End If
+
+                    cCorreosSinSeparar = cCorreosSinSeparar + "," + "notificaciones@sensa.com.mx"
+
+                    Dim vlArchivosAdjuntos
+                    Dim vlNombreArchivo As String
+                    Dim vlparametros
+
+                    cArchivosSinSeparar = ""
+
+                    If conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim <> "" Then
+                        vlArchivosAdjuntos = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cDatosAdjuntos").ToString.Trim.Split(",")
+                        For j As Integer = 0 To DirectCast(vlArchivosAdjuntos, String()).Length - 1
+                            If vlArchivosAdjuntos(j).ToString.Trim.Contains("_Libre") Then
+                                vlparametros = vlArchivosAdjuntos(j).ToString.Trim.Replace("_Libre", "").Split(",")
+                                vlNombreArchivo = CreaArchivoNotificacion("CotizacionLibre.rpt", vlparametros)
+                                'cArchivosSinSeparar = cArchivosSinSeparar + flSubirArchivoFTP("Notificaciones", vlNombreArchivo) + ","
+                                cArchivosSinSeparar = cArchivosSinSeparar + vlNombreArchivo + ","
+                            Else
+                                vlparametros = (vlArchivosAdjuntos(j).ToString.Trim + ",").Split(",")
+                                vlNombreArchivo = CreaArchivoNotificacion("Cotizacion.rpt", vlparametros)
+                                'cArchivosSinSeparar = cArchivosSinSeparar + flSubirArchivoFTP("Notificaciones", vlNombreArchivo) + ","
+                                cArchivosSinSeparar = cArchivosSinSeparar + vlNombreArchivo + ","
+                            End If
+                        Next
+                    End If
+
+                    plSendMailApi("Notificaciones", vlAsunto, vlCuerpoCorreo, cCorreosSinSeparar, cArchivosSinSeparar)
+
+                    vlCuerpoCorreo = "<!DOCTYPE html>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<html lang=""en"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta charset=""UTF-8"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "</head>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "<font color=""#084B8A"" face=""Arial"">" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + "    <p><b>Buen día</b></p>" + vbCr
+                    If vlbAprobado = True Then
+                        vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:green""><b>APROBADA</b></span> por parte del supervisor.</p>"
+                    Else
+                        '19/08/2021 César Niebla | Concatenamos el motivo de rechazo al cuerpo de correo de notificación
+                        vlCuerpoCorreo = vlCuerpoCorreo + "        <p>Su solicitud ha sido <span style=""color:red""><b>RECHAZADA (" + vlMotivoRechazoSolicitud + ") </b></span> por parte del supervisor.</p>"
+                    End If
+                    vlCuerpoCorreo = vlCuerpoCorreo + "     <p> <b>Fecha Solicitud:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("FechaSolicitud").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Cliente:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("Cliente").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Solicita:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioSolicita").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Autoriza:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioAutoriza").ToString.Trim + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Permisos solicitado:</b> <u>" + vlPermisos + "</u>"
+                    vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Mensaje:</b> " + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cMensaje").ToString.Trim + " </p>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
+                    vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
+
+                    cCorreosSinSeparar = conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSolicito").ToString.Trim + ",notificaciones@sensa.com.mx"
+
+                    plSendMailApi("Notificaciones", vlAsunto, vlCuerpoCorreo, cCorreosSinSeparar, cArchivosSinSeparar)
+
+
                 End If
-                vlCuerpoCorreo = vlCuerpoCorreo + "     <p> <b>Fecha Solicitud:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("FechaSolicitud").ToString.Trim + "</u>"
-                vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Cliente:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("Cliente").ToString.Trim + "</u>"
-                vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Solicita:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioSolicita").ToString.Trim + "</u>"
-                vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Autoriza:</b> <u>" + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("UsuarioAutoriza").ToString.Trim + "</u>"
-                vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Permisos solicitado:</b> <u>" + vlPermisos + "</u>"
-                vlCuerpoCorreo = vlCuerpoCorreo + " <br><b>Mensaje:</b> " + conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("cMensaje").ToString.Trim + " </p>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + " </body>" + vbCr
-                vlCuerpoCorreo = vlCuerpoCorreo + " </html>" + vbCr
-
-                correo.CC.Clear()
-                correo.CC.Add(conexion.dtSolicitudAutorizacionCorreoaux.Rows(0)("MailSolicito").ToString.Trim)
-                correo.CC.Add("notificaciones@sensa.com.mx")
-
-                correo.Body = vlCuerpoCorreo
-                correo.IsBodyHtml = True
-
-                correo.Sender = New MailAddress(Configuracion.Sender, Configuracion.Etiqueta)
-
-                servidor.Host = Configuracion.ServidorSalidaCorreo
-                servidor.Port = CInt(Configuracion.PuertoCorreo)
-                servidor.EnableSsl = Configuracion.UsaSSL
-                servidor.Credentials = New Net.NetworkCredential(Configuracion.Correo, Configuracion.ContrasenaCorreo)
-                servidor.Send(correo)
 
                 conexion.IniciaTransaccion()
                 conexion.plActualizaSolicitudAutorizacionAtendida(prmID)
@@ -1651,6 +2246,10 @@ Public Class frmMDI
         'Dim myString As String = "https://api.clienttoolbox.com"
         'Dim data = Encoding.UTF8.GetBytes("")
         'Dim result_post = SendRequest(New Uri(myString), data, "application/json", "POST")
+
+    End Sub
+
+    Private Sub NtiMensaje_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles NtiMensaje.MouseDoubleClick
 
     End Sub
 
@@ -1742,5 +2341,330 @@ Public Class frmMDI
     '    End Try
     'End Function
 
+    Sub plSendMailApi(prtNombrePlantilla As String, prtAsuntoCorreo As String, prtCuerpoCorreo As String, prtCorreos As String, prtArchivosAdjuntos As String)
 
+        conexion.plObtenConfiguracionPlantillaCorreos(prtNombrePlantilla)
+        Dim baseAddress As String
+        Dim vlAcepta As String
+        Dim vlContenido As String
+        Dim vlMetodo As String
+        Dim vlPreAutenticado As Boolean
+        Dim vlCabeceros As String
+        Dim vlKeyTemplate As String
+        Dim vlIconoPDF As String
+        Dim vlIconoXML As String
+
+        If conexion.dtaux2.Rows.Count > 0 Then
+            If conexion.Mensaje = "" Then
+                baseAddress = conexion.dtaux2.Rows(0)("cUrl").ToString.Trim
+                vlAcepta = conexion.dtaux2.Rows(0)("cTipoContenidoAcepta").ToString.Trim
+                vlContenido = conexion.dtaux2.Rows(0)("cTipoContenido").ToString.Trim
+                vlMetodo = conexion.dtaux2.Rows(0)("cMetodoConsumo").ToString.Trim
+                vlKeyTemplate = conexion.dtaux2.Rows(0)("cKeyTemplate").ToString.Trim
+                vlPreAutenticado = CBool(conexion.dtaux2.Rows(0)("bPreAutenticacion"))
+                vlCabeceros = conexion.dtaux2.Rows(0)("cCabeceros").ToString.Trim
+                vlIconoPDF = conexion.dtaux2.Rows(0)("cIconoPDF").ToString.Trim
+                vlIconoXML = conexion.dtaux2.Rows(0)("cIconoXML").ToString.Trim
+            Else
+                Loggers.e("Error al obtener la configuracion de la plantilla " + prtNombrePlantilla + vbCr + conexion.Mensaje, MyClass.GetType.Name)
+                Exit Sub
+            End If
+        Else
+            Loggers.e("No se pudo obtener la configuracion de la plantilla " + prtNombrePlantilla, MyClass.GetType.Name)
+            Exit Sub
+        End If
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+
+        Dim http As HttpWebRequest = CType(WebRequest.Create(New Uri(baseAddress)), HttpWebRequest)
+        http.Accept = vlAcepta
+        http.ContentType = vlContenido
+        http.Method = vlMetodo
+        http.PreAuthenticate = vlPreAutenticado
+
+        Dim vlCabecerosClase() As CabecerosRequest = Newtonsoft.Json.JsonConvert.DeserializeObject(Of CabecerosRequest())(vlCabeceros)
+
+        For Each cab As CabecerosRequest In vlCabecerosClase
+            http.Headers.Add(cab.cabecero, cab.valor)
+        Next
+
+        Dim notificacion As New NotificacionesRequest
+        Dim from As New from
+        Dim merge_info As New merge_info
+
+        notificacion.mail_template_key = vlKeyTemplate
+        from.address = Configuracion.Sender
+        from.name = Configuracion.Etiqueta
+        notificacion.from = from
+
+        Dim RecorreCorreos = prtCorreos.Split(",")
+
+        Dim para(RecorreCorreos.Length - 1) As Para
+
+        For j As Integer = 0 To DirectCast(RecorreCorreos, String()).Length - 1
+            para(j) = New Para
+            para(j).email_address = New email_address
+            para(j).email_address.address = RecorreCorreos(j)
+            para(j).email_address.name = RecorreCorreos(j)
+
+        Next
+
+        notificacion.para = para
+
+        merge_info.AsuntoCorreo = flQuitaCaraceteresSinAcento(prtAsuntoCorreo)
+        merge_info.CuerpoCorreo = flQuitaCaraceteres(prtCuerpoCorreo)
+
+        'Gilberto Madrid 02/12/2025 quitamos esto ya que se agrego que se adjuntaran los documentos en la misma plantilla
+        'merge_info.ArchivosAdjuntos = ""
+        'Dim RecorreArchivos = prtArchivosAdjuntos.Split(",")
+        'For j As Integer = 0 To DirectCast(RecorreArchivos, String()).Length - 1
+        'If RecorreArchivos(j).ToString.Trim() <> "" Then
+        ' If RecorreArchivos(j).ToString.Substring(RecorreArchivos(j).ToString().Length - 3).ToUpper() = "PDF" Then
+        ' merge_info.ArchivosAdjuntos = merge_info.ArchivosAdjuntos + vlIconoPDF.Replace("REEMPLAZA", RecorreArchivos(j).ToString)
+        'Else
+        ' If RecorreArchivos(j).ToString.Substring(RecorreArchivos(j).ToString().Length - 3).ToUpper() = "XML" Then
+        ' merge_info.ArchivosAdjuntos = merge_info.ArchivosAdjuntos + vlIconoXML.Replace("REEMPLAZA", RecorreArchivos(j).ToString)
+        ' Else
+        ' merge_info.ArchivosAdjuntos = merge_info.ArchivosAdjuntos + "<a href=" + RecorreArchivos(j).ToString + "<img width=""40px"" height=""40px"" src=""http://sensa.com.mx/adsum/ICONOS/ARCHIVO.png"" /></a>"
+        ' End If
+        ' End If
+        ' End If
+        ' Next
+
+        notificacion.merge_info = merge_info
+
+        'Gilberto Madrid 02/12/2025 con esto dejamos que en la plantilla se agreguen los documentos adjuntos
+        '***************************************************************************************************
+        Dim RecorreArchivos = prtArchivosAdjuntos.Split(",")
+        'Dim attachments() As attachments
+        Dim vlArchivosAdjuntosBase64 As List(Of attachments) = New List(Of attachments)
+        Dim archivoadjunto As attachments
+        Dim vlNombreArchivo
+        Dim bytesArchivo() As Byte
+        Dim cadenaBase64 As String
+        Loggers.d("Antes de crear los archivos a byte base 64 - " + prtArchivosAdjuntos, MyClass.GetType.Name)
+        For j As Integer = 0 To DirectCast(RecorreArchivos, String()).Length - 1
+            If RecorreArchivos(j).ToString.Trim() <> "" Then
+                Loggers.d("creando archivo a base 64 - " + RecorreArchivos(j).ToString.Trim(), MyClass.GetType.Name)
+                archivoadjunto = New attachments
+                bytesArchivo = File.ReadAllBytes(RecorreArchivos(j).ToString.Trim())
+                cadenaBase64 = Convert.ToBase64String(bytesArchivo)
+                vlNombreArchivo = RecorreArchivos(j).ToString.Trim().Split("\")
+                archivoadjunto.name = vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1)
+                archivoadjunto.content = cadenaBase64
+                If archivoadjunto.name.Substring(archivoadjunto.name.ToString().Length - 3).ToUpper() = "PDF" Then
+                    archivoadjunto.mime_type = "application/pdf"
+                Else
+                    If archivoadjunto.name.Substring(archivoadjunto.name.ToString().Length - 3).ToUpper() = "XML" Then
+                        archivoadjunto.mime_type = "text/xml"
+                    Else
+                        archivoadjunto.mime_type = "text/plain"
+                    End If
+                End If
+                vlArchivosAdjuntosBase64.Add(archivoadjunto)
+            End If
+        Next
+
+        Loggers.d("terminando de crear los archivos a base 64", MyClass.GetType.Name)
+
+        notificacion.attachments = vlArchivosAdjuntosBase64
+        '***************************************************************************************************
+
+        Dim jsonString As String = JsonConvert.SerializeObject(notificacion)
+
+        Dim parsedContent As JObject = JObject.Parse(jsonString)
+        Loggers.d("Json que se mandara en la peticion sendmailapi" + vbCr + "Plantilla: " + prtNombrePlantilla + vbCr + parsedContent.ToString(), MyClass.GetType.Name)
+
+        Try
+            Dim encoding As New ASCIIEncoding()
+            Dim bytes As Byte() = encoding.GetBytes(parsedContent.ToString())
+
+
+            Using stream As Stream = http.GetRequestStream()
+                stream.Write(bytes, 0, bytes.Length)
+                stream.Close()
+            End Using
+
+            Dim response As HttpWebResponse = CType(http.GetResponse(), HttpWebResponse)
+            Using reader As New StreamReader(response.GetResponseStream())
+                Dim result As String = reader.ReadToEnd()
+                Loggers.d("Resultado de la peticion sendmailapi" + vbCr + "Plantilla: " + prtNombrePlantilla + vbCr + result, MyClass.GetType.Name)
+            End Using
+        Catch ex As Exception
+            Loggers.e("Error en la peticion sendmailapi" + vbCr + "Plantilla: " + prtNombrePlantilla + vbCr + ex.Message, MyClass.GetType.Name)
+        End Try
+
+    End Sub
+
+    Function flQuitaCaraceteres(prtTexto As String) As String
+        prtTexto = prtTexto.Replace("á", "&aacute;")
+        prtTexto = prtTexto.Replace("é", "&eacute;")
+        prtTexto = prtTexto.Replace("í", "&iacute;")
+        prtTexto = prtTexto.Replace("ó", "&oacute;")
+        prtTexto = prtTexto.Replace("ú", "&uacute;")
+
+        prtTexto = prtTexto.Replace("Á", "&Aacute;")
+        prtTexto = prtTexto.Replace("É", "&Eacute;")
+        prtTexto = prtTexto.Replace("Í", "&Iacute;")
+        prtTexto = prtTexto.Replace("Ó", "&Oacute;")
+        prtTexto = prtTexto.Replace("Ú", "&Uacute;")
+
+        prtTexto = prtTexto.Replace("ñ", "&ntilde;")
+        prtTexto = prtTexto.Replace("Ñ", "&Ntilde;")
+        prtTexto = prtTexto.Replace("'", """")
+
+        Return prtTexto
+
+    End Function
+
+    Function flQuitaCaraceteresSinAcento(prtTexto As String) As String
+        prtTexto = prtTexto.Replace("á", "a")
+        prtTexto = prtTexto.Replace("é", "e")
+        prtTexto = prtTexto.Replace("í", "i")
+        prtTexto = prtTexto.Replace("ó", "o")
+        prtTexto = prtTexto.Replace("ú", "u")
+
+        prtTexto = prtTexto.Replace("Á", "A")
+        prtTexto = prtTexto.Replace("É", "E")
+        prtTexto = prtTexto.Replace("Í", "I")
+        prtTexto = prtTexto.Replace("Ó", "O")
+        prtTexto = prtTexto.Replace("Ú", "U")
+
+        Return prtTexto
+
+    End Function
+
+    'Function flSubirArchivoSFTP(prtNombreServidorFTP As String, prtRutaArchivo As String) As String
+
+    '    If prtRutaArchivo.Trim = "" Then
+    '        Loggers.e("La ruta del archivo viene vacia " + prtRutaArchivo, MyClass.GetType.Name)
+    '        Return ""
+    '    End If
+
+
+    '    Dim baseAddress As String
+    '    Dim vlUsuario As String
+    '    Dim vlContraseña As String
+    '    Dim vlRutaWeb As String
+    '    Dim vlPuerto As String
+    '    Dim vlcRutaServidorSFTP As String
+
+    '    conexion.plObtenConfiguracionServidorFTP(prtNombreServidorFTP)
+    '    If conexion.dtaux2.Rows.Count > 0 Then
+    '        If conexion.Mensaje = "" Then
+    '            baseAddress = conexion.dtaux2.Rows(0)("cUrl").ToString.Trim
+    '            vlUsuario = conexion.dtaux2.Rows(0)("cUsuario").ToString.Trim
+    '            vlContraseña = conexion.dtaux2.Rows(0)("cContraseña").ToString.Trim
+    '            vlRutaWeb = conexion.dtaux2.Rows(0)("cRutaArchivoWeb").ToString.Trim
+    '            vlPuerto = conexion.dtaux2.Rows(0)("cPuerto").ToString.Trim
+    '            vlcRutaServidorSFTP = conexion.dtaux2.Rows(0)("cRutaServidorSFTP").ToString.Trim
+    '        Else
+    '            Loggers.e("Error al obtener la configuracion del servidor FTP " + prtNombreServidorFTP + vbCr + conexion.Mensaje, MyClass.GetType.Name)
+    '            Return ""
+    '        End If
+    '    Else
+    '        Loggers.e("No se pudo obtener la configuracion dedel servidor FTP " + prtNombreServidorFTP, MyClass.GetType.Name)
+    '        Return ""
+    '    End If
+
+    '    Try
+    '        Dim vlNombreArchivo = prtRutaArchivo.Split("\")
+
+    '        If vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1).Trim = "" Then
+    '            Loggers.e("La ruta del archivo viene vacia " + vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1).Trim, MyClass.GetType.Name)
+    '            Return ""
+    '        End If
+
+    '        prtNombreServidorFTP = vlcRutaServidorSFTP + vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1)
+
+    '        Using sftpClient As New SftpClient(baseAddress, CInt(vlPuerto), vlUsuario, vlContraseña)
+    '            sftpClient.Connect()
+
+    '            ' 2. Abrir el archivo local para lectura
+    '            Using fileStream As FileStream = File.OpenRead(prtRutaArchivo)
+    '                ' 3. Subir el archivo
+    '                ' El método UploadFile establece el nombre del archivo en el destino remoto
+    '                ' Si desea que tenga un nombre diferente, puede usar el método UploadFile(FileStream, String)
+    '                sftpClient.UploadFile(fileStream, prtNombreServidorFTP)
+    '            End Using
+
+    '            ' 4. Desconectar (se hace automáticamente al salir del bloque Using)
+    '        End Using
+
+    '        Loggers.d("El archivo se subió con éxito al servidor SFTP " + prtNombreServidorFTP, MyClass.GetType.Name)
+
+    '        Return vlRutaWeb + vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1)
+
+    '    Catch ex As Exception
+    '        Loggers.e("Error al subir el archivo al servidor SFTP: " + ex.Message + " " + prtNombreServidorFTP, MyClass.GetType.Name)
+    '        Return ""
+    '    End Try
+
+    'End Function
+
+    'Function flSubirArchivoFTP(prtNombreServidorFTP As String, prtRutaArchivo As String) As String
+
+    '    If prtRutaArchivo.Trim = "" Then
+    '        Loggers.e("La ruta del archivo viene vacia " + prtRutaArchivo, MyClass.GetType.Name)
+    '        Return ""
+    '    End If
+
+    '    conexion.plObtenConfiguracionServidorFTP(prtNombreServidorFTP)
+    '    Dim baseAddress As String
+    '    Dim vlUsuario As String
+    '    Dim vlContraseña As String
+    '    Dim vlRutaWeb As String
+    '    Dim vlcRutaServidorSFTP As String
+
+    '    If conexion.dtaux2.Rows.Count > 0 Then
+    '        If conexion.Mensaje = "" Then
+    '            baseAddress = conexion.dtaux2.Rows(0)("cUrl").ToString.Trim
+    '            vlUsuario = conexion.dtaux2.Rows(0)("cUsuario").ToString.Trim
+    '            vlContraseña = conexion.dtaux2.Rows(0)("cContraseña").ToString.Trim
+    '            vlRutaWeb = conexion.dtaux2.Rows(0)("cRutaArchivoWeb").ToString.Trim
+    '            vlcRutaServidorSFTP = conexion.dtaux2.Rows(0)("cRutaServidorSFTP").ToString.Trim
+    '        Else
+    '            Loggers.e("Error al obtener la configuracion del servidor FTP " + prtNombreServidorFTP + vbCr + conexion.Mensaje, MyClass.GetType.Name)
+    '            Return ""
+    '        End If
+    '    Else
+    '        Loggers.e("No se pudo obtener la configuracion dedel servidor FTP " + prtNombreServidorFTP, MyClass.GetType.Name)
+    '        Return ""
+    '    End If
+
+    '    If vlcRutaServidorSFTP.Trim <> "" Then
+    '        Loggers.d("El servidor esta configurado para SFTP y se ejecutara como tal " + prtNombreServidorFTP + vbCr + conexion.Mensaje, MyClass.GetType.Name)
+    '        flSubirArchivoFTP = flSubirArchivoSFTP(prtNombreServidorFTP, prtRutaArchivo)
+    '        Loggers.d("Termino de ejcutarse como SFTP " + prtNombreServidorFTP + vbCr + conexion.Mensaje, MyClass.GetType.Name)
+    '        Exit Function
+    '    End If
+
+    '    Try
+    '        Dim vlNombreArchivo = prtRutaArchivo.Split("\")
+
+    '        If vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1).Trim = "" Then
+    '            Loggers.e("La ruta del archivo viene vacia " + vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1).Trim, MyClass.GetType.Name)
+    '            Return ""
+    '        End If
+
+    '        prtNombreServidorFTP = baseAddress + vlNombreArchivo(DirectCast(vlNombreArchivo, String()).Length - 1)
+
+    '        Dim ftpUri As New Uri(String.Format(prtNombreServidorFTP))
+    '        Dim request As FtpWebRequest = DirectCast(FtpWebRequest.Create(ftpUri), FtpWebRequest)
+    '        request.Credentials = New NetworkCredential(vlUsuario, vlContraseña)
+    '        request.Method = WebRequestMethods.Ftp.UploadFile
+    '        Dim fileToUpload As Byte() = File.ReadAllBytes(prtRutaArchivo)
+    '        Dim requestStream As Stream = request.GetRequestStream()
+    '        requestStream.Write(fileToUpload, 0, fileToUpload.Length)
+    '        requestStream.Close()
+    '        Dim response As FtpWebResponse = DirectCast(request.GetResponse(), FtpWebResponse)
+    '        Loggers.d("El archivo se subió con éxito al servidor FTP. Estado: " + response.StatusDescription + " " + prtNombreServidorFTP, MyClass.GetType.Name)
+    '        response.Close()
+    '        Return prtNombreServidorFTP.Replace(baseAddress, vlRutaWeb)
+    '    Catch ex As Exception
+    '        Loggers.e("Error al subir el archivo al servidor FTP: " + ex.Message + " " + prtNombreServidorFTP, MyClass.GetType.Name)
+    '        Return ""
+    '    End Try
+
+    'End Function
 End Class

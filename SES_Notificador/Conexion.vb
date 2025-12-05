@@ -62,6 +62,7 @@ Public Class Conexion
         Try
             DarValor()
             consulta = "select * from SES_Notificaciones (NOLOCK) WHERE bActivo=1"
+            'consulta = "select * from SES_Notificaciones (NOLOCK) WHERE bActivo=1 AND cNombreNotificacion='NotificacionArticulosSinMovimiento'"
             da = New SqlDataAdapter(consulta, cadenaconexion)
             dtNotificaciones = New DataTable
             da.Fill(dtNotificaciones)
@@ -159,7 +160,8 @@ Public Class Conexion
             consulta = cProcedimiento
             da = New SqlDataAdapter(consulta, cadenaconexion)
             da.SelectCommand.CommandType = CommandType.StoredProcedure
-
+            'Gilberto Madrid 31/05/2024 se agrega el timeout ya que para los stores de reportes que se comunican por VPN tardan mucho
+            da.SelectCommand.CommandTimeout = 60000
             For i As Integer = 0 To DirectCast(cParametros, String()).Length - 1
 
                 da.SelectCommand.Parameters.AddWithValue(cNombresParametros(i).ToString.Trim, cParametros(i))
@@ -314,6 +316,7 @@ Public Class Conexion
         Try
             DarValor()
             consulta = "SELECT * FROM SES_Trabajos_WS (NOLOCK) WHERE bActivo=1"
+            'consulta = "SELECT * FROM SES_Trabajos_WS (NOLOCK) WHERE cNombreTrabajo='EjecutaPlantillaMailing'"
             da = New SqlDataAdapter(consulta, cadenaconexion)
             dtWebServices = New DataTable
             da.Fill(dtWebServices)
@@ -526,6 +529,60 @@ Public Class Conexion
             Mensaje = ex.Message
         End Try
 
+    End Sub
+
+    Function flTraeWsTokenAzure() As Boolean
+        flTraeWsTokenAzure = False
+        Try
+            DarValor()
+
+            consulta = "Select * From SES_Trabajos_WS (Nolock)WHERE cNombreTrabajo='ObtenerTokenAzure'"
+
+            da = New SqlDataAdapter(consulta, cadenaconexion)
+            dtaux2 = New DataTable
+            da.Fill(dtaux2)
+
+            If dtaux2.Rows.Count = 0 Then
+                Exit Function
+            End If
+
+            flTraeWsTokenAzure = True
+
+        Catch ex As Exception
+            Mensaje = ex.Message
+        End Try
+    End Function
+
+    Sub plObtenConfiguracionPlantillaCorreos(prtNombrePlantilla As String)
+        Mensaje = ""
+        Try
+            DarValor()
+
+            consulta = "Select * From SES_Configuracion_Plantillas_Correos (Nolock) WHERE cNombrePlantilla='" + prtNombrePlantilla + "'"
+
+            da = New SqlDataAdapter(consulta, cadenaconexion)
+            dtaux2 = New DataTable
+            da.Fill(dtaux2)
+
+        Catch ex As Exception
+            Mensaje = ex.Message
+        End Try
+    End Sub
+
+    Sub plObtenConfiguracionServidorFTP(prtNombreServidorFTP As String)
+        Mensaje = ""
+        Try
+            DarValor()
+
+            consulta = "Select * From SES_Configuracion_ftp_archivos (Nolock) WHERE cTipoArchivo='" + prtNombreServidorFTP + "'"
+
+            da = New SqlDataAdapter(consulta, cadenaconexion)
+            dtaux2 = New DataTable
+            da.Fill(dtaux2)
+
+        Catch ex As Exception
+            Mensaje = ex.Message
+        End Try
     End Sub
 
 End Class
