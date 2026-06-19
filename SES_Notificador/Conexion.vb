@@ -316,7 +316,7 @@ Public Class Conexion
         Try
             DarValor()
             consulta = "SELECT * FROM SES_Trabajos_WS (NOLOCK) WHERE bActivo=1"
-            'consulta = "SELECT * FROM SES_Trabajos_WS (NOLOCK) WHERE cNombreTrabajo='EjecutaPlantillaMailing'"
+            'consulta = "SELECT * FROM SES_Trabajos_WS (NOLOCK) WHERE cNombreTrabajo='EnviarInformacionVoltz'"
             da = New SqlDataAdapter(consulta, cadenaconexion)
             dtWebServices = New DataTable
             da.Fill(dtWebServices)
@@ -412,6 +412,8 @@ Public Class Conexion
             consulta = consulta + " op.cDatosAdjuntos,op.cMensaje,suc.CSUCURSAL,mailsol.cEmail as MailSolicito,mailaut.cEmail as MailAutoriza," + vbCr
             'César Niebla 28/09/2022 Regresamos dentro del resultado el correo configurado para copia de las autorizaciones por correo a otro supervisor
             consulta = consulta + " (Select top 1 cValor From SES_ParametrosConfiguracion (Nolock) where cParametroConfiguracion='CorreoCopia_OperacionesSupervisadasRemotasPorCorreo' and bActivo=1) as MailSupervisorCopia" + vbCr
+            'Gilberto Madrid 11/06/2026 regresamos el usuario que autoriza para poder enviar una notificacion push a la app
+            consulta = consulta + " ,cUsuarioAutoriza as UsuarioAutorizador" + vbCr
             consulta = consulta + " FROM OperacionesSupervisadasRemotasPorCorreo op(NOLOCK)" + vbCr
             consulta = consulta + " INNER JOIN CLIENTES cli(NOLOCK) ON cli.CCLIENTE=op.cCliente" + vbCr
             consulta = consulta + " INNER JOIN USUARIOS usuaut (NOLOCK) ON op.cUsuarioAutoriza=usuaut.USULOGIN" + vbCr
@@ -584,5 +586,23 @@ Public Class Conexion
             Mensaje = ex.Message
         End Try
     End Sub
+
+    Sub plTraeAutorizacionesQualisPendientesDeEnvio()
+
+        Mensaje = ""
+        Try
+            DarValor()
+            consulta = "SELECT * FROM vw_AutorizacionesPendientesQualis_CRM (NOLOCK) WHERE bNotificadaPush=0"
+            da = New SqlDataAdapter(consulta, cadenaconexion)
+            dtaux2 = New DataTable
+            da.Fill(dtaux2)
+
+        Catch ex As Exception
+            Mensaje = ex.Message
+        End Try
+
+    End Sub
+
+
 
 End Class

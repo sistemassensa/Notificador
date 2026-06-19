@@ -199,6 +199,11 @@
     <Compile Include="DTO\merge_info.vb" />
     <Compile Include="DTO\NotificacionesRequest.vb" />
     <Compile Include="DTO\Para.vb" />
+    <Compile Include="DTO\Price_Voltz.vb" />
+    <Compile Include="DTO\Product_Features.vb" />
+    <Compile Include="DTO\Product_Inventory.vb" />
+    <Compile Include="DTO\Stock_Quantity.vb" />
+    <Compile Include="DTO\VotlzRequest.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +239,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\EnviarPush.vb" />
     <Compile Include="util\Logger.vb" />
     <Compile Include="Web References\PruebasWSSiemens\Reference.vb">
       <AutoGen>True</AutoGen>

@@ -185,9 +185,33 @@ Public Class frmMDI
         'Me.Text = Me.Text + "| Version 1.9.4 | 03/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
         'Gilberto Madrid 04/12/2025 se agrega metodo para borrar logs, se agregan logs en la ejecucion de los ws y se quitan 2 ws que son obten ip publica y actualizar ip en azure
-        Me.Text = Me.Text + "| Version 1.9.5 | 04/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+        'Me.Text = Me.Text + "| Version 1.9.5 | 04/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
 
-        NtiMensaje.Text = "| V1.9.5 | BD: " + Configuracion.BaseDeDatos
+        'Gilberto Madrid 18/12/2025 Se agrega el consumo al WS de Voltz 
+        'Me.Text = Me.Text + "| Version 1.9.6 | 18/12/2025 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 01/02/2026 se centra las columnas de tipo numero en el resultado de las notificaciones
+        'Me.Text = Me.Text + "| Version 1.9.7 | 27/02/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 10/03/2026 Se arregla el centrado para cuando se colorea la columna ya que el centrado habia quedado fuera de td
+        'Me.Text = Me.Text + "| Version 1.9.8 | 27/02/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 11/06/2026 Se agregan las notificaciones push de la plataforma CRM
+        'Me.Text = Me.Text + "| Version 1.9.9 | 11/06/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 11/06/2026 Se agregan las notificaciones push de la plataforma CRM
+        'Me.Text = Me.Text + "| Version 1.10.0 | 11/06/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 15/06/2026 Se agregan las notificaciones push de la plataforma CRM para las autorizaciones de qualis
+        'Me.Text = Me.Text + "| Version 1.10.1 | 11/06/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 15/06/2026 Falto la actualizaciòn del valor de notificado para que solo notifique una vez
+        'Me.Text = Me.Text + "| Version 1.10.2 | 15/06/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        'Gilberto Madrid 15/06/2026 Se agrego el filtro en el where de la vista que solo aquellas que no han sido notificadas para poder reutilizar la vista
+        Me.Text = Me.Text + "| Version 1.10.3 | 15/06/2026 | Servidor: " + Configuracion.Servidor + " | BD: " + Configuracion.BaseDeDatos + " |"
+
+        NtiMensaje.Text = "| V1.10.3 | BD: " + Configuracion.BaseDeDatos
 
         'If Configuracion.FuncionPortal = True Then
         ' Me.Text = Me.Text + " USO PORTAL |"
@@ -603,11 +627,24 @@ Public Class frmMDI
                 If ExcluyeColumnas.Contains(column.ColumnName) = False Then
                     vlCampoAgregado = True
                     If ColoreaColumnas.Contains(column.ColumnName) = False Then
-                        html.Append("<td>")
+
+                        'Gilberto Madrid 27/02/2026 se agrego esto para que los numeros los centrara
+                        If IsNumeric(row(column.ColumnName)) = True Then
+                            html.Append("<td align=""center"">")
+                        Else
+                            html.Append("<td>")
+                        End If
+
                         html.Append(row(column.ColumnName))
                         html.Append("</td>")
                     Else
-                        html.Append("<td><FONT COLOR=" + ColorColumnas + ">")
+                        'Gilberto Madrid 27/02/2026 se agrego esto para que los numeros los centrara
+                        'Gilberto Madrid 10/03/2026 se arregla esto ya que el align habia quedado fuera del td
+                        If IsNumeric(row(column.ColumnName)) = True Then
+                            html.Append("<td align=""center""><FONT COLOR=" + ColorColumnas + ">")
+                        Else
+                            html.Append("<td><FONT COLOR=" + ColorColumnas + ">")
+                        End If
                         html.Append(row(column.ColumnName))
                         html.Append("</td>")
                     End If
@@ -1188,6 +1225,121 @@ Public Class frmMDI
                         conexion.EjecutaTexto("UPDATE SES_Trabajos_WS SET bActivo=0 WHERE cNombreTrabajo='EjecutaPlantillaMailing'")
                         conexion.TerminaTransaccion()
 
+                    Case "EnviarInformacionVoltz"
+
+                        Dim vlEnviarInformacionVolts As New List(Of VotlzRequest)
+
+                        Dim uri As Uri
+                        Dim vlCuerpo As String
+
+                        Dim vlNuevoElementoVoltz As VotlzRequest
+                        Dim vlInventarioTienda As Product_Inventory
+                        uri = New Uri(prmUrl)
+
+                        For i As Integer = 0 To dtResultadoWS.Rows.Count - 1
+
+                            vlNuevoElementoVoltz = New VotlzRequest
+                            vlNuevoElementoVoltz.mmn = dtResultadoWS.Rows(i)("CARTICULO").ToString.Trim
+                            vlNuevoElementoVoltz.seller_code = dtResultadoWS.Rows(i)("CARTICULO").ToString.Trim
+                            vlNuevoElementoVoltz.product_description = dtResultadoWS.Rows(i)("CDESCRIP").ToString.Trim
+
+                            vlNuevoElementoVoltz.price_voltz = New Price_Voltz
+
+                            vlNuevoElementoVoltz.price_voltz.value = dtResultadoWS.Rows(i)("NPVTA_3")
+                            vlNuevoElementoVoltz.price_voltz.discount = 0
+                            vlNuevoElementoVoltz.price_voltz.currency = dtResultadoWS.Rows(i)("CABREVIATURA").ToString.Trim
+                            vlNuevoElementoVoltz.price_voltz.exchage_rate = dtResultadoWS.Rows(i)("Paridad")
+
+                            vlNuevoElementoVoltz.sale_unit = dtResultadoWS.Rows(i)("CUNIDAD").ToString.Trim
+
+                            vlNuevoElementoVoltz.stock_quantity = New Stock_Quantity
+
+                            vlNuevoElementoVoltz.stock_quantity.value = dtResultadoWS.Rows(i)("NEXISTENCIA")
+                            vlNuevoElementoVoltz.stock_quantity.warehouse_cp = dtResultadoWS.Rows(i)("CPSucursal").ToString.Trim
+
+                            vlNuevoElementoVoltz.product_inventory = New List(Of Product_Inventory)
+
+                            vlInventarioTienda = New Product_Inventory
+                            vlInventarioTienda.store_name = dtResultadoWS.Rows(i)("CABREVIA").ToString.Trim
+                            vlInventarioTienda.store_id = dtResultadoWS.Rows(i)("CSUCURSAL").ToString.Trim
+                            vlInventarioTienda.quantity = dtResultadoWS.Rows(i)("NEXISTENCIA")
+
+                            vlNuevoElementoVoltz.product_inventory.Add(vlInventarioTienda)
+
+                            vlNuevoElementoVoltz.sat_code = dtResultadoWS.Rows(i)("cCodigoSAT").ToString.Trim
+
+                            vlNuevoElementoVoltz.brand = dtResultadoWS.Rows(i)("Linea").ToString.Trim
+                            'vlNuevoElementoVoltz.image_cover = ""
+                            vlNuevoElementoVoltz.image_urls = New List(Of String)
+                            vlNuevoElementoVoltz.product_features = New List(Of Product_Features)
+                            'vlNuevoElementoVoltz.tech_file = ""
+
+                            vlEnviarInformacionVolts.Add(vlNuevoElementoVoltz)
+
+                        Next
+
+                        vlCuerpo = Newtonsoft.Json.JsonConvert.SerializeObject(vlEnviarInformacionVolts, Newtonsoft.Json.Formatting.None)
+
+                        If Trim(vlCuerpo) = "" Then
+                            Loggers.d("No se obtuvo resultados del query para el envio de información a VOLTZ", MyClass.GetType.Name)
+                            Exit Sub
+                        End If
+
+                        Loggers.d("Cuerpo del envio de informacion a VOLTZ" + vbCrLf + vlCuerpo, MyClass.GetType.Name)
+
+                        Dim data As Byte() = Encoding.UTF8.GetBytes(vlCuerpo)
+                        Dim vlRequest As HttpWebRequest = CType(WebRequest.Create(uri), HttpWebRequest)
+
+                        Select Case prmCmetodo
+                            Case "GET"
+                                vlRequest.Method = HttpMethod.Get.Method
+                            Case "POST"
+                                vlRequest.Method = HttpMethod.Post.Method
+                            Case "PUT"
+                                vlRequest.Method = HttpMethod.Put.Method
+                            Case "DELETE"
+                                vlRequest.Method = HttpMethod.Delete.Method
+
+                        End Select
+
+                        vlRequest.ContentType = prmCtipoContenido
+                        vlRequest.ContentLength = data.Length
+
+                        Dim vlCabeceros() As CabecerosRequest = Newtonsoft.Json.JsonConvert.DeserializeObject(Of CabecerosRequest())(prmCCabeceros)
+
+                        For Each cab As CabecerosRequest In vlCabeceros
+                            vlRequest.Headers.Add(cab.cabecero, cab.valor)
+                        Next
+
+                        Dim stream As Stream = vlRequest.GetRequestStream()
+
+                        stream.Write(data, 0, data.Length)
+                        stream.Close()
+
+                        Dim result As HttpWebResponse = CType(vlRequest.GetResponse(), HttpWebResponse)
+
+                        Dim streamResponse = result.GetResponseStream()
+
+                        Dim reader = New StreamReader(streamResponse)
+
+
+                        Dim receiveContent = reader.ReadToEnd()
+
+                        reader.Close()
+
+                        If result.StatusCode >= HttpStatusCode.OK And result.StatusCode < HttpStatusCode.Ambiguous Then
+
+                            vlFechaHoraFin = Now
+                            'aqui guardamos en el historial
+                            conexion.IniciaTransaccion()
+                            conexion.flGuardaHistorialWS(prmNombreWS, vlFechaHoraInicio, vlFechaHoraFin, vlCuerpo)
+                            conexion.TerminaTransaccion()
+
+                            Loggers.d("WS Envio informacion Voltz ejecutado correctamente", MyClass.GetType.Name)
+                        Else
+                            Loggers.d("Error al ejecutar el servicio EnviarInformacionVoltz - " + result.StatusCode.ToString + " - " + receiveContent, MyClass.GetType.Name)
+                        End If
+
                 End Select
 
                 vlCuerpoCorreo = CreaHTMLDesdeDataTable(dtResultadoWS, prmExcluirColumnas, "", "")
@@ -1666,11 +1818,49 @@ Public Class frmMDI
 
             EjecutaSolicitudAutorizacionCorreo()
 
+            'Gilberto Madrid 15/06/2026 aqui vamos a traernos las autorizaciones de Qualis para mandarlas al push
+            MandarNotificacionPushAutorizacionesQualis()
+
         Catch ex As Exception
             Loggers.e("Error ejecución autorización por correo " + ex.Message, ex, MyClass.GetType.Name)
         End Try
 
         tmrSolicitudAutorizacionCorreo.Enabled = True
+
+    End Sub
+
+    Sub MandarNotificacionPushAutorizacionesQualis()
+
+        'Gilberto Madrid 11/06/2026 se agregan las notificaciones push para el portal
+        conexion.plTraeAutorizacionesQualisPendientesDeEnvio()
+
+        Dim dtAutQualis As DataTable
+
+        If conexion.Mensaje = "" Then
+            dtAutQualis = conexion.dtaux2
+
+            If dtAutQualis.Rows.Count > 0 Then
+
+                Dim notifi As New EnviarPush
+                Dim ParametrosSeparados
+                Dim NombresParametrosSeparados
+
+                For i As Integer = 0 To dtAutQualis.Rows.Count - 1
+
+                    notifi.EnviarNotificacionPush(CStr(IIf(dtAutQualis(i)("UsuLogin_Autorizo").ToString.Trim.ToLower = "sa", "admin", dtAutQualis(i)("UsuLogin_Autorizo").ToString.Trim.ToLower)), "Nueva solicitud de autorización", dtAutQualis(i)("cMensaje").ToString)
+
+                    'Actualizamos el valor de notificado
+                    ParametrosSeparados = (dtAutQualis.Rows(i)("CSUCURSAL").ToString.Trim + "," + dtAutQualis.Rows(i)("nID").ToString.Trim).Split(",")
+                    NombresParametrosSeparados = "@CSUCURSAL,@prmId".Split(",")
+                    conexion.EjecutaProcedimiento("sp_ActualizaAutorizacionQualisNotificadaPush", ParametrosSeparados, NombresParametrosSeparados)
+
+
+                Next
+
+            End If
+
+        End If
+
 
     End Sub
 
@@ -1952,11 +2142,14 @@ Public Class frmMDI
 
 
 
-
                 conexion.IniciaTransaccion()
                 conexion.plActualizaSolicitudAutorizacionEnviada(prmID)
                 conexion.TerminaTransaccion()
 
+                'Gilberto Madrid 11/06/2026 se agregan las notificaciones push para el portal
+                Dim notifi As New EnviarPush
+                notifi.EnviarNotificacionPush("admin", "Nueva solicitud de autorización", vlAsunto)
+                notifi.EnviarNotificacionPush("castroj", "Nueva solicitud de autorización", vlAsunto)
 
             End If
 

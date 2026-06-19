@@ -174,7 +174,6 @@ C:\fuente\Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Cng
 C:\fuente\Notificador\SES_Notificador\bin\Debug\System.Security.Cryptography.Pkcs.xml
 C:\fuente\Notificador\SES_Notificador\bin\Debug\System.Text.Encoding.CodePages.xml
 C:\fuente\Notificador\SES_Notificador\bin\Debug\System.Threading.Tasks.Extensions.xml
-C:\fuente\Notificador\SES_Notificador\obj\Debug\SES_Notificador.vbprojAssemblyReference.cache
 C:\fuente\Notificador\SES_Notificador\obj\Debug\SES_Notificador.frmIniciaSesion.resources
 C:\fuente\Notificador\SES_Notificador\obj\Debug\SES_Notificador.frmConfiguracion.resources
 C:\fuente\Notificador\SES_Notificador\obj\Debug\SES_Notificador.frmMDI.resources
